@@ -7,9 +7,8 @@ and fixing memory bugs. It picks up where `LearnCwithRPG-terminal` chapter 10
 The full spec is [`PLAN.md`](PLAN.md). Authors follow [`AUTHORING.md`](AUTHORING.md).
 Your ledger is [`PROGRESS.md`](PROGRESS.md).
 
-> **Status:** under construction. The shared build (`common.mk`, `lib/`, `scripts/`) is in place.
-> M08-M10 and capstone 2 are complete and pass `scripts/verify-all.sh`, pending Bruce's review.
-> See the table below.
+> **Status:** complete. All 15 units and 3 capstones ship with lessons, starters and solutions
+> (91 unit exercises plus 3 capstones), and `scripts/verify-all.sh` passes on the full tree.
 
 ## What you will be able to do
 
@@ -77,7 +76,7 @@ A `[BUG]` starter builds and then fails its own check, a sanitizer or Valgrind.
 | `[DESIGN]` | write the ownership contract in the header, then implement it |
 | `[NO-ASAN]` | (marker) a demonstration that deliberately runs without sanitizers |
 
-Monk's early units also use `[LOOKUP]`, `[BREAK]` and `[EXPLAIN]`; their READMEs say what each asks.
+Some early units also use `[LOOKUP]`, `[BREAK]` and `[EXPLAIN]`; their READMEs say what each asks.
 
 ### Make targets
 
@@ -109,26 +108,27 @@ They exist for when you **really** need one. No README links to them.
 
 ## Course map
 
-| Unit | Topic | Exercises | Author | State |
-|---|---|---|---|---|
-| M01 | Lifetimes: stack, static, heap | 5 | Monk | planned |
-| M02 | `malloc` and `free` fundamentals | 6 | Monk | planned |
-| M02b | Your first ASan and Valgrind report | 3 | Monk | planned |
-| M03 | `calloc`, zeroing, size arithmetic | 5 | Monk | planned |
-| M04 | `realloc` done right | 6 | Monk | planned |
-| M05 | Ownership and create/destroy pairs | 6 | Monk | planned |
-| M06 | Partial failure and cleanup | 6 | Monk | planned |
-| M07 | Heap strings | 6 | Monk | planned |
-| [M08](units/m08-grids/LESSON.md) | Arrays of pointers and 2D grids | 6 | Jack | complete, verify-all green, awaiting review |
-| [M09](units/m09-vec/LESSON.md) | The dynamic array | 6 | Jack | complete, verify-all green, awaiting review |
-| [M10](units/m10-linked/LESSON.md) | Linked structures | 6 | Jack | complete, verify-all green, awaiting review |
-| M11 | Reading the tools, in depth | 7 | Bruce | planned |
-| M12 | Bug hunt: the heap bug zoo | 10 | Bruce | planned |
-| M13 | gdb for memory bugs | 4 | Bruce | planned |
-| M14 | Arenas and pools (intuition) | 5 | Bruce | planned |
-| C1 | `wordfreq` | capstone | Monk | planned |
-| [C2](capstones/c2-gridload/README.md) | `gridload` | capstone | Jack | complete, verify-all green, awaiting review |
-| C3 | `lru` | capstone | Bruce | planned |
+| Unit | Topic | Exercises | State |
+|---|---|---|---|
+| [M01](units/m01-lifetimes/LESSON.md) | Lifetimes: stack, static, heap | 5 | complete |
+| [M02](units/m02-malloc-free/LESSON.md) | `malloc` and `free` fundamentals | 6 | complete |
+| [M02b](units/m02b-first-reports/LESSON.md) | Your first ASan and Valgrind report | 3 | complete |
+| [M03](units/m03-calloc-size/LESSON.md) | `calloc`, zeroing, size arithmetic | 5 | complete |
+| [M04](units/m04-realloc/LESSON.md) | `realloc` done right | 6 | complete |
+| [M05](units/m05-ownership/LESSON.md) | Ownership and create/destroy pairs | 6 | complete |
+| [M06](units/m06-partial-failure/LESSON.md) | Partial failure and cleanup | 6 | complete |
+| [M07](units/m07-heap-strings/LESSON.md) | Heap strings | 6 | complete |
+| [M08](units/m08-grids/LESSON.md) | Arrays of pointers and 2D grids | 6 | complete |
+| [M09](units/m09-vec/LESSON.md) | The dynamic array | 6 | complete |
+| [M10](units/m10-linked/LESSON.md) | Linked structures | 6 | complete |
+| [M11](units/m11-tools/LESSON.md) | Reading the tools, in depth | 7 | complete |
+| [M12](units/m12-zoo/LESSON.md) | Bug hunt: the heap bug zoo | 14 | complete |
+| [M13](units/m13-gdb/LESSON.md) | gdb for memory bugs | 4 | complete |
+| [M14](units/m14-arenas/LESSON.md) | Arenas and pools (intuition) | 5 | complete |
+| [C1](capstones/c1-wordfreq/README.md) | `wordfreq` | capstone | complete |
+| [C2](capstones/c2-gridload/README.md) | `gridload` | capstone | complete |
+| [C3](capstones/c3-lru/README.md) | `lru` | capstone | complete |
+| | **Total** | **91 + 3 capstones** | |
 
 Work the units in order. M02b comes straight after M02 because you will meet sanitizer
 reports from M02 onward.
@@ -140,7 +140,7 @@ LearnCMemoryByGrinding/
 ├── README.md         this file
 ├── PLAN.md           the spec
 ├── AUTHORING.md      rules for authors
-├── AUTHORING-INFRA.md  build mechanics for authors (Bruce)
+├── AUTHORING-INFRA.md  build mechanics for authors
 ├── PROGRESS.md       your ledger
 ├── common.mk         shared build
 ├── lib/              failalloc, course.h

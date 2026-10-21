@@ -4,14 +4,14 @@ Built from `PLAN.md` v0.2, sections 4 and 7. When this file and `PLAN.md` disagr
 `PLAN.md` wins. Fix this file and tell the other authors.
 
 Build mechanics (the exercise Makefile template, `TAG`, `EXPECT_SYMBOLS`, `make capture`,
-`capture.txt`, `verify-all.sh` usage) are in Bruce's **`AUTHORING-INFRA.md`**. This file covers content rules.
+`capture.txt`, `verify-all.sh` usage) are in **`AUTHORING-INFRA.md`**. This file covers content rules.
 
 ## 1. Order of work
 
-1. Bruce builds `common.mk`, `lib/` (`failalloc`, `course.h`) and `scripts/verify-all.sh`.
+1. The shared infrastructure comes first: `common.mk`, `lib/` (`failalloc`, `course.h`) and `scripts/verify-all.sh`.
    **No exercise code is written before they exist.** Lessons and READMEs may be drafted earlier.
 2. For each unit, write `LESSON.md` first, then the exercises, then the solutions.
-3. Run `scripts/verify-all.sh`. A unit is not done until it passes, and Bruce has reviewed it.
+3. Run `scripts/verify-all.sh`. A unit is not done until it passes, and the reviewer has signed it off.
 
 ## 2. Folder layout
 

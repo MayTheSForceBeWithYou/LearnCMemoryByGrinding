@@ -6,50 +6,106 @@ got wrong first; that is the part worth rereading.
 
 Legend: `[ ]` not started · `[~]` in progress · `[x]` clean everywhere
 
-## Course build state (authors)
+## M01: Lifetimes: stack, static, heap
 
-| Part | Owner | State |
-|---|---|---|
-| `common.mk`, `lib/`, `scripts/` | Bruce | in use |
-| M01-M07, C1 | Monk | not started |
-| M08-M10 lessons + exercise READMEs | Jack | revised from real captures + Monk's review |
-| M08-M10 starters + solutions | Jack | done, verify-all 35/35 green (2026-10-21), awaiting Bruce |
-| C2 README | Jack | revised (format edge cases, NULL rules) |
-| C2 starter + solution | Jack | done, verify-all 2/2 green, sweep N=46, awaiting Bruce |
-| M11-M14, C3 | Bruce | not started |
+| | Exercise | Tag | Notes |
+|---|---|---|---|
+| [ ] | e01-trace-frames | `[TRACE]` | |
+| [ ] | e02-return-local | `[BUG]` | |
+| [ ] | e03-predict-warning | `[PREDICT]` | |
+| [ ] | e04-three-ways | `[WRITE]` | |
+| [ ] | e05-static-overwrite | `[PREDICT]` | |
 
-## M01-M07, M02b
+## M02: `malloc` and `free` fundamentals
 
-Exercise rows are added by their author when the unit lands.
+| | Exercise | Tag | Notes |
+|---|---|---|---|
+| [ ] | e01-heap-squares | `[WRITE]` | |
+| [ ] | e02-lookup-malloc | `[PREDICT]` | |
+| [ ] | e03-use-after-free | `[BUG]` | |
+| [ ] | e04-predict-free | `[PREDICT]` `[NO-ASAN]` | |
+| [ ] | e05-dup-array | `[WRITE]` | |
+| [ ] | e06-trace-free | `[TRACE]` | |
 
-| Unit | Done | Notes |
-|---|---|---|
-| M01 Lifetimes | 0/5 | |
-| M02 `malloc`/`free` | 0/6 | |
-| M02b First reports | 0/3 | |
-| M03 `calloc` and sizes | 0/5 | |
-| M04 `realloc` | 0/6 | |
-| M05 Ownership | 0/6 | |
-| M06 Partial failure | 0/6 | |
-| M07 Heap strings | 0/6 | |
+## M02b: Your first ASan and Valgrind report
+
+| | Exercise | Tag | Notes |
+|---|---|---|---|
+| [ ] | e01-report-uaf | `[REPORT]` | |
+| [ ] | e02-report-lsan | `[REPORT]` | |
+| [ ] | e03-predict-valgrind | `[PREDICT]` | |
+
+## M03: `calloc`, zeroing, size arithmetic
+
+| | Exercise | Tag | Notes |
+|---|---|---|---|
+| [ ] | e01-zeroed-tally | `[WRITE]` | |
+| [ ] | e02-break-count | `[PREDICT]` | |
+| [ ] | e03-checked-array | `[WRITE]` | |
+| [ ] | e04-predict-conversions | `[PREDICT]` | |
+| [ ] | e05-negative-count | `[BUG]` | |
+
+## M04: `realloc` done right
+
+| | Exercise | Tag | Notes |
+|---|---|---|---|
+| [ ] | e01-append-grow | `[WRITE]` | |
+| [ ] | e02-lost-on-failure | `[BUG]` `[FAULT]` | |
+| [ ] | e03-trace-move | `[TRACE]` | |
+| [ ] | e04-predict-realloc | `[PREDICT]` `[NO-ASAN]` | |
+| [ ] | e05-dangling-interior | `[BUG]` | |
+| [ ] | e06-fault-growbuf | `[FAULT]` | |
+
+## M05: Ownership and create/destroy pairs
+
+| | Exercise | Tag | Notes |
+|---|---|---|---|
+| [ ] | e01-who-frees-this | `[TRACE]` | |
+| [ ] | e02-design-contract | `[DESIGN]` | |
+| [ ] | e03-out-param | `[WRITE]` | |
+| [ ] | e04-borrowed-freed | `[BUG]` | |
+| [ ] | e05-design-opaque | `[DESIGN]` | |
+| [ ] | e06-transfer | `[WRITE]` | |
+
+## M06: Partial failure and cleanup
+
+| | Exercise | Tag | Notes |
+|---|---|---|---|
+| [ ] | e01-two-step | `[FAULT]` | |
+| [ ] | e02-leak-on-third | `[BUG]` `[FAULT]` | |
+| [ ] | e03-goto-cleanup | `[FAULT]` | |
+| [ ] | e04-predict-sweep | `[PREDICT]` `[FAULT]` | |
+| [ ] | e05-idempotent-destroy | `[FAULT]` | |
+| [ ] | e06-nested-build | `[WRITE]` `[FAULT]` | |
+
+## M07: Heap strings
+
+| | Exercise | Tag | Notes |
+|---|---|---|---|
+| [ ] | e01-my-strdup | `[WRITE]` | |
+| [ ] | e02-off-by-one-nul | `[BUG]` | |
+| [ ] | e03-join | `[WRITE]` | |
+| [ ] | e04-fault-format | `[FAULT]` | |
+| [ ] | e05-predict-lengths | `[PREDICT]` | |
+| [ ] | e06-design-paths | `[DESIGN]` | |
 
 ## M08: Arrays of pointers and 2D grids
 
 | | Exercise | Tag | Notes |
 |---|---|---|---|
-| [ ] | e01-split-words | `[WRITE]` S | |
+| [ ] | e01-split-words | `[WRITE]` | |
 | [ ] | e02-free-order | `[BUG]` | |
 | [ ] | e03-lost-table | `[PREDICT]` | |
-| [ ] | e04-flat-grid | `[WRITE]` M | |
-| [ ] | e05-one-block | `[WRITE]` M (`long double` cells) | |
-| [ ] | e06-copy-rows | `[FAULT]` S | |
+| [ ] | e04-flat-grid | `[WRITE]` | |
+| [ ] | e05-one-block | `[WRITE]` | |
+| [ ] | e06-copy-rows | `[FAULT]` | |
 
 ## M09: The dynamic array
 
 | | Exercise | Tag | Notes |
 |---|---|---|---|
-| [ ] | e01-vec-int | `[WRITE]` M | |
-| [ ] | e02-insert-remove | `[WRITE]` S | |
+| [ ] | e01-vec-int | `[WRITE]` | |
+| [ ] | e02-insert-remove | `[WRITE]` | |
 | [ ] | e03-growth-count | `[PREDICT]` | |
 | [ ] | e04-held-pointer | `[REPORT]` | |
 | [ ] | e05-strvec | `[DESIGN]` `[FAULT]` | |
@@ -59,26 +115,67 @@ Exercise rows are added by their author when the unit lands.
 
 | | Exercise | Tag | Notes |
 |---|---|---|---|
-| [ ] | e01-list-basics | `[WRITE]` M | |
+| [ ] | e01-list-basics | `[WRITE]` | |
 | [ ] | e02-free-loop | `[BUG]` | |
 | [ ] | e03-who-is-lost | `[PREDICT]` | |
-| [ ] | e04-tree-free | `[WRITE]` M | |
+| [ ] | e04-tree-free | `[WRITE]` | |
 | [ ] | e05-shared-tail | `[REPORT]` | |
 | [ ] | e06-list-from-words | `[FAULT]` | |
 
-## M11-M14
+## M11: Reading the tools, in depth
 
-| Unit | Done | Notes |
-|---|---|---|
-| M11 Reading the tools | 0/7 | |
-| M12 Bug zoo | 0/10 | |
-| M13 gdb | 0/4 | |
-| M14 Arenas and pools | 0/5 | |
+| | Exercise | Tag | Notes |
+|---|---|---|---|
+| [ ] | e01-shadow-bytes | `[REPORT]` | |
+| [ ] | e02-three-stacks | `[REPORT]` | |
+| [ ] | e03-return-local | `[REPORT]` | |
+| [ ] | e04-direct-indirect | `[PREDICT]` | |
+| [ ] | e05-four-categories | `[PREDICT]` | |
+| [ ] | e06-track-origins | `[REPORT]` | |
+| [ ] | e07-split-fields | `[FAULT]` | |
+
+## M12: Bug hunt: the heap bug zoo
+
+| | Exercise | Tag | Notes |
+|---|---|---|---|
+| [ ] | e01-leak | `[BUG]` | |
+| [ ] | e02-double-free | `[BUG]` | |
+| [ ] | e03-uaf | `[BUG]` | |
+| [ ] | e04-heap-overflow | `[BUG]` | |
+| [ ] | e05-heap-underflow | `[BUG]` | |
+| [ ] | e06-off-by-one-nul | `[BUG]` | |
+| [ ] | e07-uninit-read | `[BUG]` | |
+| [ ] | e08-invalid-free | `[BUG]` | |
+| [ ] | e09-under-allocation | `[BUG]` | |
+| [ ] | e10-glibc-aborts | `[BUG]` `[NO-ASAN]` | |
+| [ ] | e11-mixed-a | `[BUG]` | |
+| [ ] | e12-mixed-b | `[BUG]` | |
+| [ ] | e13-which-tool | `[PREDICT]` | |
+| [ ] | e14-strv-dup | `[FAULT]` | |
+
+## M13: gdb for memory bugs
+
+| | Exercise | Tag | Notes |
+|---|---|---|---|
+| [ ] | e01-break-on-alloc | `[TRACE]` | |
+| [ ] | e02-far-corruption | `[BUG]` | |
+| [ ] | e03-asan-stop | `[FAULT]` | |
+| [ ] | e04-vgdb | `[BUG]` | |
+
+## M14: Arenas and pools (intuition)
+
+| | Exercise | Tag | Notes |
+|---|---|---|---|
+| [ ] | e01-bump-arena | `[WRITE]` | |
+| [ ] | e02-misaligned | `[BUG]` | |
+| [ ] | e03-pool-freelist | `[WRITE]` | |
+| [ ] | e04-heap-usage | `[PREDICT]` | |
+| [ ] | e05-arena-chain | `[FAULT]` | |
 
 ## Capstones
 
-| | Capstone | Notes |
-|---|---|---|
-| [ ] | C1 `wordfreq` | |
-| [ ] | C2 `gridload` | |
-| [ ] | C3 `lru` | |
+| | Capstone | Tag | Notes |
+|---|---|---|---|
+| [ ] | c1-wordfreq | `[FAULT]` | |
+| [ ] | c2-gridload | `[FAULT]` | |
+| [ ] | c3-lru | `[FAULT]` | |

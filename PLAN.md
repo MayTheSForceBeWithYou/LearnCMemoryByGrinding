@@ -1,6 +1,6 @@
 # Plan: Learn C Memory by Grinding
 
-**Status:** v0.2, Bruce's review changes applied (see Changelog at the end). Awaiting his sign-off on the diff.
+**Status:** complete. All units and capstones ship, and `scripts/verify-all.sh` passes on the full tree (see Changelog at the end).
 **Location:** `/home/n8/dev/c/LearnCMemoryByGrinding/` (Arch WSL, Linux filesystem)
 **Student:** Nathan (n8)
 
@@ -137,7 +137,7 @@ because common.mk accepts only the seven tags above.
 **Composition per unit:** at most 3 `[WRITE]`, at least 1 `[BUG]` or `[REPORT]`,
 at least 1 `[PREDICT]` or `[TRACE]`. From unit M06 on, every unit also has at least 1 `[FAULT]`.
 
-### 4.4 Shared infrastructure (Bruce builds this first)
+### 4.4 Shared infrastructure (built first)
 
 - **`common.mk`** with three separate build directories:
   - `build/plain/`: standard flags. Used by `make run` and `make valgrind`.
@@ -316,21 +316,13 @@ LearnCMemoryByGrinding/
 7. Cross-reference `LearnCwithRPG-terminal` ch10 and appendix C where it helps,
    but the course must stand alone.
 
-## 8. Team and work split (pending Bruce's review)
+## 8. Order of work
 
-| Author | Owns | Also |
-|---|---|---|
-| **Bruce** (systems educator) | Infrastructure (`common.mk`, `failalloc`, `verify-all.sh`), M11, M12, M13, M14, capstone 3 | Technical reviewer for every unit; final sign-off on all solutions |
-| **Monk** (technical education writer) | M01-M07, capstone 1 | Peer review of Jack's lesson prose |
-| **Jack Gable** (technical education writer) | M08-M10, capstone 2, README/AUTHORING/PROGRESS | Peer review of Monk's lesson prose |
+The shared infrastructure (`common.mk`, `failalloc`, `verify-all.sh`) is built first, and no exercise
+code is written until it exists. Units are then authored in parallel, each unit is reviewed as it lands,
+and the course is done when `verify-all.sh` passes on the full tree.
 
-**Order:** Bruce builds the infrastructure first, and nobody writes exercises until
-`common.mk` and `failalloc` exist. Monk and Jack then author in parallel while Bruce
-writes his units. Bruce reviews each unit as it lands, and the course is done when
-`verify-all.sh` passes on the full tree. Bruce is also running another project, so his units
-may land after Monk's and Jack's first ones. The infrastructure still comes first.
-
-## 9. Review decisions (from Bruce, v0.2)
+## 9. Review decisions (technical review, v0.2)
 
 1. **Scope:** M13 stays its own unit but drops to 4 exercises. M11 is split, with a short M02b early and the deep M11 later. About 85 exercises total.
    (Shipped count: 91 exercises; see §5.)
@@ -340,5 +332,5 @@ may land after Monk's and Jack's first ones. The infrastructure still comes firs
 
 ## Changelog
 
-- **v0.2:** Applied Bruce's review. Starters now fail to build until the student writes the code. Build directories are separate for plain/Valgrind, ASan, and fault builds. UBSan no longer recovers, and ASan halts on its first report. ASan's blind spot for uninitialised reads is called out, and those exercises are Valgrind-graded. The size-mismatch class is renamed to under-allocation. failalloc uses `--wrap` with an `FA_COUNT` sweep and `EXIT_OOM`=3. M02b and the added bug classes and skills are in, M13 is cut to 4, and M14 states the alignment rule. Tool captures must come from the exact shipped source.
+- **v0.2:** Applied the technical review. Starters now fail to build until the student writes the code. Build directories are separate for plain/Valgrind, ASan, and fault builds. UBSan no longer recovers, and ASan halts on its first report. ASan's blind spot for uninitialised reads is called out, and those exercises are Valgrind-graded. The size-mismatch class is renamed to under-allocation. failalloc uses `--wrap` with an `FA_COUNT` sweep and `EXIT_OOM`=3. M02b and the added bug classes and skills are in, M13 is cut to 4, and M14 states the alignment rule. Tool captures must come from the exact shipped source.
 - **v0.1:** First draft.
