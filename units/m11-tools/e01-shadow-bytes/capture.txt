@@ -1,0 +1,56 @@
+# source-sha256: 9a4b0696516a04fe83392240a95efa626884ed21645ed68ec2bf9c39ca2a7e88
+# tool: asan   captured: 2026-10-21 14:57 PDT on DESKTOP-AK42M6F
+# Addresses, PIDs and thread ids will differ on your run.
+=================================================================
+==797496==ERROR: AddressSanitizer: heap-buffer-overflow on address 0x744e5d4e001e at pc 0x6016dcfee9cc bp 0x7fff85d8c710 sp 0x7fff85d8c700
+WRITE of size 1 at 0x744e5d4e001e thread T0
+    #0 0x6016dcfee9cb in hex_encode /home/n8/dev/c/LearnCMemoryByGrinding/units/m11-tools/e01-shadow-bytes/main.c:21
+    #1 0x6016dcfeead8 in main /home/n8/dev/c/LearnCMemoryByGrinding/units/m11-tools/e01-shadow-bytes/main.c:28
+    #2 0x782e5e627780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
+    #3 0x782e5e6278b8 in __libc_start_main (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
+    #4 0x6016dcfee1c4 in _start (/home/n8/dev/c/LearnCMemoryByGrinding/units/m11-tools/e01-shadow-bytes/build/asan/prog+0x21c4) (BuildId: 93c3dfc8a395f6d76da2c085bb58526d0006248a)
+
+0x744e5d4e001e is located 0 bytes after 14-byte region [0x744e5d4e0010,0x744e5d4e001e)
+allocated by thread T0 here:
+    #0 0x782e5f32c0c1 in malloc (/usr/lib/libasan.so.8+0x12c0c1) (BuildId: b8a4241051a1621937fdc46e867ba7ecb56d96ea)
+    #1 0x6016dcfee4b8 in hex_encode /home/n8/dev/c/LearnCMemoryByGrinding/units/m11-tools/e01-shadow-bytes/main.c:14
+    #2 0x6016dcfeead8 in main /home/n8/dev/c/LearnCMemoryByGrinding/units/m11-tools/e01-shadow-bytes/main.c:28
+    #3 0x782e5e627780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
+    #4 0x782e5e6278b8 in __libc_start_main (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
+    #5 0x6016dcfee1c4 in _start (/home/n8/dev/c/LearnCMemoryByGrinding/units/m11-tools/e01-shadow-bytes/build/asan/prog+0x21c4) (BuildId: 93c3dfc8a395f6d76da2c085bb58526d0006248a)
+
+SUMMARY: AddressSanitizer: heap-buffer-overflow /home/n8/dev/c/LearnCMemoryByGrinding/units/m11-tools/e01-shadow-bytes/main.c:21 in hex_encode
+Shadow bytes around the buggy address:
+  0x744e5d4dfd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x744e5d4dfe00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x744e5d4dfe80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x744e5d4dff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x744e5d4dff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+=>0x744e5d4e0000: fa fa 00[06]fa fa fa fa fa fa fa fa fa fa fa fa
+  0x744e5d4e0080: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x744e5d4e0100: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x744e5d4e0180: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x744e5d4e0200: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x744e5d4e0280: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+Shadow byte legend (one shadow byte represents 8 application bytes):
+  Addressable:           00
+  Partially addressable: 01 02 03 04 05 06 07 
+  Heap left redzone:       fa
+  Freed heap region:       fd
+  Stack left redzone:      f1
+  Stack mid redzone:       f2
+  Stack right redzone:     f3
+  Stack after return:      f5
+  Stack use after scope:   f8
+  Global redzone:          f9
+  Global init order:       f6
+  Poisoned by user:        f7
+  Container overflow:      fc
+  Array cookie:            ac
+  Intra object redzone:    bb
+  ASan internal:           fe
+  Left alloca redzone:     ca
+  Right alloca redzone:    cb
+==797496==ABORTING
+make[1]: *** [../../../common.mk:91: asan] Aborted
+# exit status: 2

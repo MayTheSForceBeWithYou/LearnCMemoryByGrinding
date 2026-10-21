@@ -1,0 +1,8 @@
+# source-sha256: c406ef0a6b2b9a00b5b59861d172ee6845cbfb0f7c543024c9fab74a5a2e4ff4
+# tool: demo-tcache   captured: 2026-10-21 14:58 PDT on DESKTOP-AK42M6F
+# Addresses, PIDs and thread ids will differ on your run.
+sum 6
+exit 0
+free(): double free detected in tcache 2
+exit 134
+# exit status: 0

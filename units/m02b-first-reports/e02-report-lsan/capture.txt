@@ -1,0 +1,26 @@
+# source-sha256: b496942909e481478b3e5fe3e7e67e976840f14c2af141f1fdb9bde37094b3e0
+# tool: asan   captured: 2026-10-21 15:24 PDT on DESKTOP-AK42M6F
+# Addresses, PIDs and thread ids will differ on your run.
+
+=================================================================
+==876752==ERROR: LeakSanitizer: detected memory leaks
+
+Direct leak of 64 byte(s) in 1 object(s) allocated from:
+    #0 0x74edffb2c0c1 in malloc (/usr/lib/libasan.so.8+0x12c0c1) (BuildId: b8a4241051a1621937fdc46e867ba7ecb56d96ea)
+    #1 0x57236bbcc4d1 in roster_new /home/n8/dev/c/LearnCMemoryByGrinding/units/m02b-first-reports/e02-report-lsan/main.c:20
+    #2 0x57236bbccbf9 in main /home/n8/dev/c/LearnCMemoryByGrinding/units/m02b-first-reports/e02-report-lsan/main.c:47
+    #3 0x74edfee27780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
+    #4 0x74edfee278b8 in __libc_start_main (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
+    #5 0x57236bbcc1d4 in _start (/home/n8/dev/c/LearnCMemoryByGrinding/units/m02b-first-reports/e02-report-lsan/build/asan/prog+0x31d4) (BuildId: de5708c23431a5b49828ecc5555e6b2e6b5466bb)
+
+Indirect leak of 18 byte(s) in 3 object(s) allocated from:
+    #0 0x74edffb2c0c1 in malloc (/usr/lib/libasan.so.8+0x12c0c1) (BuildId: b8a4241051a1621937fdc46e867ba7ecb56d96ea)
+    #1 0x57236bbcc7bd in roster_add /home/n8/dev/c/LearnCMemoryByGrinding/units/m02b-first-reports/e02-report-lsan/main.c:35
+    #2 0x57236bbcce29 in main /home/n8/dev/c/LearnCMemoryByGrinding/units/m02b-first-reports/e02-report-lsan/main.c:54
+    #3 0x74edfee27780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
+    #4 0x74edfee278b8 in __libc_start_main (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
+    #5 0x57236bbcc1d4 in _start (/home/n8/dev/c/LearnCMemoryByGrinding/units/m02b-first-reports/e02-report-lsan/build/asan/prog+0x31d4) (BuildId: de5708c23431a5b49828ecc5555e6b2e6b5466bb)
+
+SUMMARY: AddressSanitizer: 82 byte(s) leaked in 4 allocation(s).
+make[1]: *** [../../../common.mk:91: asan] Aborted
+# exit status: 2

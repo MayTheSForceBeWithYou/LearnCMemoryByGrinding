@@ -1,0 +1,28 @@
+# source-sha256: 5a70fdfdd6877cf667c99c0b119a3e6e4df9ad7c30a1e2f5151f36fed7f9dd57
+# tool: matrix   captured: 2026-10-21 14:58 PDT on DESKTOP-AK42M6F
+# Addresses, PIDs and thread ids will differ on your run.
+### nul: plain
+exit 0
+### nul: asan
+==797674==ERROR: AddressSanitizer: heap-buffer-overflow on address 0x7aa0bdce0015 at pc 0x7e80bfabc4ce bp 0x7fff136c59c0 sp 0x7fff136c5178
+SUMMARY: AddressSanitizer: heap-buffer-overflow /home/n8/dev/c/LearnCMemoryByGrinding/units/m12-zoo/e13-which-tool/main.c:13 in scenario_nul
+exit 134
+### nul: valgrind
+==797676== Invalid write of size 1
+exit 1
+### uninit: plain
+not positive
+exit 0
+### uninit: asan
+exit 0
+### uninit: valgrind
+==797692== Conditional jump or move depends on uninitialised value(s)
+exit 1
+### stack: plain
+exit 0
+### stack: asan
+main.c:39:10: runtime error: index 4 out of bounds for type 'int [4]'
+exit 1
+### stack: valgrind
+exit 0
+# exit status: 0

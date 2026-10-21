@@ -1,0 +1,7 @@
+# source-sha256: a7df6f3dcb4d4236c253c31349869a8eb803710018ae85638879609ce52204e8
+# tool: demo-300k   captured: 2026-10-21 15:26 PDT on DESKTOP-AK42M6F
+# Addresses, PIDs and thread ids will differ on your run.
+ulimit -s: 8192
+built a degenerate tree of 300000 nodes; freeing it recursively
+make[1]: *** [Makefile:15: demo-300k] Segmentation fault (core dumped)
+# exit status: 2

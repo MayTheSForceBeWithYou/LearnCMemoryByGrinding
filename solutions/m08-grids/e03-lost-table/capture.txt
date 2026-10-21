@@ -1,0 +1,45 @@
+# source-sha256: 490af3e1a3cde0c89aace6d6774b57961944080cb8b5effc6e16602a1aab82e1
+# tool: asan   captured: 2026-10-21 14:58 PDT on DESKTOP-AK42M6F
+# Addresses, PIDs and thread ids will differ on your run.
+
+=================================================================
+==798454==ERROR: LeakSanitizer: detected memory leaks
+
+Direct leak of 32 byte(s) in 1 object(s) allocated from:
+    #0 0x7f692812c0c1 in malloc (/usr/lib/libasan.so.8+0x12c0c1) (BuildId: b8a4241051a1621937fdc46e867ba7ecb56d96ea)
+    #1 0x5a65c9b866c3 in case_b /home/n8/dev/c/LearnCMemoryByGrinding/units/m08-grids/e03-lost-table/main.c:31
+    #2 0x5a65c9b86819 in main /home/n8/dev/c/LearnCMemoryByGrinding/units/m08-grids/e03-lost-table/main.c:52
+    #3 0x7f6927427780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
+    #4 0x7f69274278b8 in __libc_start_main (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
+    #5 0x5a65c9b86194 in _start (/home/n8/dev/c/LearnCMemoryByGrinding/units/m08-grids/e03-lost-table/build/asan/prog+0x2194) (BuildId: 4a8be11dcc931b5025b15642ff46047bea34285d)
+
+Direct leak of 32 byte(s) in 1 object(s) allocated from:
+    #0 0x7f692812bea9 in calloc (/usr/lib/libasan.so.8+0x12bea9) (BuildId: b8a4241051a1621937fdc46e867ba7ecb56d96ea)
+    #1 0x5a65c9b86474 in make_rows /home/n8/dev/c/LearnCMemoryByGrinding/units/m08-grids/e03-lost-table/main.c:14
+    #2 0x5a65c9b8662c in case_a /home/n8/dev/c/LearnCMemoryByGrinding/units/m08-grids/e03-lost-table/main.c:25
+    #3 0x5a65c9b867f0 in main /home/n8/dev/c/LearnCMemoryByGrinding/units/m08-grids/e03-lost-table/main.c:51
+    #4 0x7f6927427780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
+    #5 0x7f69274278b8 in __libc_start_main (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
+    #6 0x5a65c9b86194 in _start (/home/n8/dev/c/LearnCMemoryByGrinding/units/m08-grids/e03-lost-table/build/asan/prog+0x2194) (BuildId: 4a8be11dcc931b5025b15642ff46047bea34285d)
+
+Direct leak of 17 byte(s) in 3 object(s) allocated from:
+    #0 0x7f6928124fce in strdup (/usr/lib/libasan.so.8+0x124fce) (BuildId: b8a4241051a1621937fdc46e867ba7ecb56d96ea)
+    #1 0x5a65c9b8657e in make_rows /home/n8/dev/c/LearnCMemoryByGrinding/units/m08-grids/e03-lost-table/main.c:18
+    #2 0x5a65c9b86727 in case_c /home/n8/dev/c/LearnCMemoryByGrinding/units/m08-grids/e03-lost-table/main.c:41
+    #3 0x5a65c9b86842 in main /home/n8/dev/c/LearnCMemoryByGrinding/units/m08-grids/e03-lost-table/main.c:53
+    #4 0x7f6927427780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
+    #5 0x7f69274278b8 in __libc_start_main (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
+    #6 0x5a65c9b86194 in _start (/home/n8/dev/c/LearnCMemoryByGrinding/units/m08-grids/e03-lost-table/build/asan/prog+0x2194) (BuildId: 4a8be11dcc931b5025b15642ff46047bea34285d)
+
+Indirect leak of 22 byte(s) in 4 object(s) allocated from:
+    #0 0x7f6928124fce in strdup (/usr/lib/libasan.so.8+0x124fce) (BuildId: b8a4241051a1621937fdc46e867ba7ecb56d96ea)
+    #1 0x5a65c9b8657e in make_rows /home/n8/dev/c/LearnCMemoryByGrinding/units/m08-grids/e03-lost-table/main.c:18
+    #2 0x5a65c9b8662c in case_a /home/n8/dev/c/LearnCMemoryByGrinding/units/m08-grids/e03-lost-table/main.c:25
+    #3 0x5a65c9b867f0 in main /home/n8/dev/c/LearnCMemoryByGrinding/units/m08-grids/e03-lost-table/main.c:51
+    #4 0x7f6927427780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
+    #5 0x7f69274278b8 in __libc_start_main (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
+    #6 0x5a65c9b86194 in _start (/home/n8/dev/c/LearnCMemoryByGrinding/units/m08-grids/e03-lost-table/build/asan/prog+0x2194) (BuildId: 4a8be11dcc931b5025b15642ff46047bea34285d)
+
+SUMMARY: AddressSanitizer: 103 byte(s) leaked in 9 allocation(s).
+make[1]: *** [../../../common.mk:91: asan] Aborted
+# exit status: 2

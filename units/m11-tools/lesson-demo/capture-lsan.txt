@@ -1,0 +1,26 @@
+# source-sha256: 16989d2cb7a1064db085f45c9681fbdb767e288789a8cba98b9e12468ea32081
+# tool: demo-lsan   captured: 2026-10-21 14:58 PDT on DESKTOP-AK42M6F
+# Addresses, PIDs and thread ids will differ on your run.
+
+=================================================================
+==797841==ERROR: LeakSanitizer: detected memory leaks
+
+Direct leak of 8 byte(s) in 1 object(s) allocated from:
+    #0 0x76e40172c0c1 in malloc (/usr/lib/libasan.so.8+0x12c0c1) (BuildId: b8a4241051a1621937fdc46e867ba7ecb56d96ea)
+    #1 0x564841b83363 in leaks /home/n8/dev/c/LearnCMemoryByGrinding/units/m11-tools/lesson-demo/main.c:26
+    #2 0x564841b83648 in main /home/n8/dev/c/LearnCMemoryByGrinding/units/m11-tools/lesson-demo/main.c:55
+    #3 0x76e400a27780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
+    #4 0x76e400a278b8 in __libc_start_main (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
+    #5 0x564841b83184 in _start (/home/n8/dev/c/LearnCMemoryByGrinding/units/m11-tools/lesson-demo/build/asan/prog+0x2184) (BuildId: a66e45f8dd07bed3798b2c303aa0aa168f794706)
+
+Indirect leak of 48 byte(s) in 1 object(s) allocated from:
+    #0 0x76e40172c0c1 in malloc (/usr/lib/libasan.so.8+0x12c0c1) (BuildId: b8a4241051a1621937fdc46e867ba7ecb56d96ea)
+    #1 0x564841b83393 in leaks /home/n8/dev/c/LearnCMemoryByGrinding/units/m11-tools/lesson-demo/main.c:29
+    #2 0x564841b83648 in main /home/n8/dev/c/LearnCMemoryByGrinding/units/m11-tools/lesson-demo/main.c:55
+    #3 0x76e400a27780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
+    #4 0x76e400a278b8 in __libc_start_main (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
+    #5 0x564841b83184 in _start (/home/n8/dev/c/LearnCMemoryByGrinding/units/m11-tools/lesson-demo/build/asan/prog+0x2184) (BuildId: a66e45f8dd07bed3798b2c303aa0aa168f794706)
+
+SUMMARY: AddressSanitizer: 56 byte(s) leaked in 2 allocation(s).
+make[1]: *** [Makefile:14: demo-lsan] Aborted
+# exit status: 2

@@ -1,0 +1,6 @@
+# source-sha256: f057250990443e3aafa871beec859717550190d02c9721ec95d53f9bb7ddee99
+# tool: demo-asan   captured: 2026-10-21 15:26 PDT on DESKTOP-AK42M6F
+# Addresses, PIDs and thread ids will differ on your run.
+grow 64 -> 128:  moved 100 of 100
+shrink 128 -> 32: moved 100 of 100
+# exit status: 0

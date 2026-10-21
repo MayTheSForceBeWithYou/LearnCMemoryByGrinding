@@ -1,0 +1,32 @@
+# source-sha256: b94e4df68e7cd0814d65442b8dc754e363a8b54d813b6c93f7d44b901d1c8433
+# tool: gdb-trace   captured: 2026-10-21 14:58 PDT on DESKTOP-AK42M6F
+# Addresses, PIDs and thread ids will differ on your run.
+Breakpoint 1 at 0x1070
+Breakpoint 2 at 0x1030
+Breakpoint 3 at 0x13a4: file main.c, line 36.
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/usr/lib/libthread_db.so.1".
+realloc((nil), 4)
+#0  0x00007ffff7ca90f0 in realloc () from /usr/lib/libc.so.6
+#1  0x00005555555552ba in vec_push (v=0x7fffffffe780, x=0) at main.c:15
+realloc(0x555555559010, 8)
+#0  0x00007ffff7ca90f0 in realloc () from /usr/lib/libc.so.6
+#1  0x00005555555552ba in vec_push (v=0x7fffffffe780, x=1) at main.c:15
+realloc(0x555555559010, 16)
+#0  0x00007ffff7ca90f0 in realloc () from /usr/lib/libc.so.6
+#1  0x00005555555552ba in vec_push (v=0x7fffffffe780, x=4) at main.c:15
+realloc(0x555555559010, 32)
+#0  0x00007ffff7ca90f0 in realloc () from /usr/lib/libc.so.6
+#1  0x00005555555552ba in vec_push (v=0x7fffffffe780, x=16) at main.c:15
+realloc(0x555555559010, 64)
+#0  0x00007ffff7ca90f0 in realloc () from /usr/lib/libc.so.6
+#1  0x00005555555552ba in vec_push (v=0x7fffffffe780, x=64) at main.c:15
+
+Breakpoint 3, main () at main.c:36
+36	    check(v.len == 10 && v.cap == 16, "ten pushes, capacity 16");
+$1 = {data = 0x555555559010, len = 10, cap = 16}
+$2 = {0, 1, 4, 9, 16, 25, 36, 49, 64, 81}
+$3 = {81, 135121}
+m13-e01-break-on-alloc: all checks passed
+[Inferior 1 (process 797786) exited normally]
+# exit status: 0

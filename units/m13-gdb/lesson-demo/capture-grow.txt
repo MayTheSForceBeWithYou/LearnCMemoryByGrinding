@@ -1,0 +1,24 @@
+# source-sha256: 2023086bd3c0bc865677e08ee3875f09e8a6d43384f7e6ef7d5fa66f1510d1f6
+# tool: demo-grow   captured: 2026-10-21 14:58 PDT on DESKTOP-AK42M6F
+# Addresses, PIDs and thread ids will differ on your run.
+Breakpoint 1 at 0x11b9: file main.c, line 13.
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/usr/lib/libthread_db.so.1".
+
+Breakpoint 1, buf_add (b=0x7fffffffe770, c=119 'w') at main.c:13
+13	    if (b->len == b->cap) {
+$1 = {data = 0x0, len = 0, cap = 0}
+$2 = 0x0
+0x00005555555552b3 in grow () at main.c:29
+29	        if (buf_add(&b, *s) != 0)
+Value returned is $3 = 0
+
+Breakpoint 1, buf_add (b=0x7fffffffe770, c=104 'h') at main.c:13
+13	    if (b->len == b->cap) {
+$4 = {data = 0x555555559010 "watc", len = 4, cap = 4}
+$5 = "watc"
+$6 = {119 'w', 97 'a', 116 't', 99 'c'}
+0x555555559010:	119 'w'	97 'a'	116 't'	99 'c'	0 '\000'	0 '\000'	0 '\000'	0 '\000'
+len 11 cap 16
+[Inferior 1 (process 798073) exited normally]
+# exit status: 0

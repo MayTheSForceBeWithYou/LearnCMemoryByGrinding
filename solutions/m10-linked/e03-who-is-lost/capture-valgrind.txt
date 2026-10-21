@@ -1,0 +1,70 @@
+# source-sha256: 6f1b03476f8df94cb545e0ff15346e4f6f1d5d22132649c48635307c34bbe9ae
+# tool: valgrind   captured: 2026-10-21 14:58 PDT on DESKTOP-AK42M6F
+# Addresses, PIDs and thread ids will differ on your run.
+==798389== Memcheck, a memory error detector
+==798389== Copyright (C) 2002-2024, and GNU GPL'd, by Julian Seward et al.
+==798389== Using Valgrind-3.25.1 and LibVEX; rerun with -h for copyright info
+==798389== Command: ./build/plain/prog
+==798389== 
+m10-e03-who-is-lost: all checks passed
+==798389== 
+==798389== HEAP SUMMARY:
+==798389==     in use at exit: 97 bytes in 12 blocks
+==798389==   total heap usage: 21 allocs, 9 frees, 4,297 bytes allocated
+==798389== 
+==798389== 5 bytes in 1 blocks are indirectly lost in loss record 1 of 6
+==798389==    at 0x48668A8: malloc (vg_replace_malloc.c:446)
+==798389==    by 0x492C33F: strdup (strdup.c:42)
+==798389==    by 0x40012AC: push (main.c:19)
+==798389==    by 0x4001325: build (main.c:30)
+==798389==    by 0x400151F: case_c (main.c:71)
+==798389==    by 0x40015DB: main (main.c:84)
+==798389== 
+==798389== 12 bytes in 3 blocks are indirectly lost in loss record 2 of 6
+==798389==    at 0x48668A8: malloc (vg_replace_malloc.c:446)
+==798389==    by 0x492C33F: strdup (strdup.c:42)
+==798389==    by 0x40012AC: push (main.c:19)
+==798389==    by 0x4001325: build (main.c:30)
+==798389==    by 0x4001408: case_a (main.c:55)
+==798389==    by 0x4001589: main (main.c:82)
+==798389== 
+==798389== 16 bytes in 4 blocks are definitely lost in loss record 3 of 6
+==798389==    at 0x48668A8: malloc (vg_replace_malloc.c:446)
+==798389==    by 0x492C33F: strdup (strdup.c:42)
+==798389==    by 0x40012AC: push (main.c:19)
+==798389==    by 0x4001325: build (main.c:30)
+==798389==    by 0x4001495: case_b (main.c:63)
+==798389==    by 0x40015B2: main (main.c:83)
+==798389== 
+==798389== 21 (16 direct, 5 indirect) bytes in 1 blocks are definitely lost in loss record 4 of 6
+==798389==    at 0x48668A8: malloc (vg_replace_malloc.c:446)
+==798389==    by 0x400128B: push (main.c:16)
+==798389==    by 0x4001325: build (main.c:30)
+==798389==    by 0x400151F: case_c (main.c:71)
+==798389==    by 0x40015DB: main (main.c:84)
+==798389== 
+==798389== 32 bytes in 2 blocks are indirectly lost in loss record 5 of 6
+==798389==    at 0x48668A8: malloc (vg_replace_malloc.c:446)
+==798389==    by 0x400128B: push (main.c:16)
+==798389==    by 0x4001325: build (main.c:30)
+==798389==    by 0x4001408: case_a (main.c:55)
+==798389==    by 0x4001589: main (main.c:82)
+==798389== 
+==798389== 60 (16 direct, 44 indirect) bytes in 1 blocks are definitely lost in loss record 6 of 6
+==798389==    at 0x48668A8: malloc (vg_replace_malloc.c:446)
+==798389==    by 0x400128B: push (main.c:16)
+==798389==    by 0x4001325: build (main.c:30)
+==798389==    by 0x4001408: case_a (main.c:55)
+==798389==    by 0x4001589: main (main.c:82)
+==798389== 
+==798389== LEAK SUMMARY:
+==798389==    definitely lost: 48 bytes in 6 blocks
+==798389==    indirectly lost: 49 bytes in 6 blocks
+==798389==      possibly lost: 0 bytes in 0 blocks
+==798389==    still reachable: 0 bytes in 0 blocks
+==798389==         suppressed: 0 bytes in 0 blocks
+==798389== 
+==798389== For lists of detected and suppressed errors, rerun with: -s
+==798389== ERROR SUMMARY: 6 errors from 6 contexts (suppressed: 0 from 0)
+make[1]: *** [../../../common.mk:94: valgrind] Error 1
+# exit status: 2

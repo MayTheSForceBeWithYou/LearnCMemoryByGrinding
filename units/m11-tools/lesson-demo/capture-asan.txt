@@ -1,0 +1,56 @@
+# source-sha256: 16989d2cb7a1064db085f45c9681fbdb767e288789a8cba98b9e12468ea32081
+# tool: demo-asan   captured: 2026-10-21 14:58 PDT on DESKTOP-AK42M6F
+# Addresses, PIDs and thread ids will differ on your run.
+=================================================================
+==797814==ERROR: AddressSanitizer: heap-buffer-overflow on address 0x6c99b92e001a at pc 0x60f9aeac232f bp 0x7ffca48bd440 sp 0x7ffca48bd430
+WRITE of size 1 at 0x6c99b92e001a thread T0
+    #0 0x60f9aeac232e in overflow /home/n8/dev/c/LearnCMemoryByGrinding/units/m11-tools/lesson-demo/main.c:19
+    #1 0x60f9aeac2591 in main /home/n8/dev/c/LearnCMemoryByGrinding/units/m11-tools/lesson-demo/main.c:53
+    #2 0x7079ba427780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
+    #3 0x7079ba4278b8 in __libc_start_main (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
+    #4 0x60f9aeac2184 in _start (/home/n8/dev/c/LearnCMemoryByGrinding/units/m11-tools/lesson-demo/build/asan/prog+0x2184) (BuildId: a66e45f8dd07bed3798b2c303aa0aa168f794706)
+
+0x6c99b92e001a is located 0 bytes after 10-byte region [0x6c99b92e0010,0x6c99b92e001a)
+allocated by thread T0 here:
+    #0 0x7079bb12c0c1 in malloc (/usr/lib/libasan.so.8+0x12c0c1) (BuildId: b8a4241051a1621937fdc46e867ba7ecb56d96ea)
+    #1 0x60f9aeac226a in overflow /home/n8/dev/c/LearnCMemoryByGrinding/units/m11-tools/lesson-demo/main.c:15
+    #2 0x60f9aeac2591 in main /home/n8/dev/c/LearnCMemoryByGrinding/units/m11-tools/lesson-demo/main.c:53
+    #3 0x7079ba427780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
+    #4 0x7079ba4278b8 in __libc_start_main (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
+    #5 0x60f9aeac2184 in _start (/home/n8/dev/c/LearnCMemoryByGrinding/units/m11-tools/lesson-demo/build/asan/prog+0x2184) (BuildId: a66e45f8dd07bed3798b2c303aa0aa168f794706)
+
+SUMMARY: AddressSanitizer: heap-buffer-overflow /home/n8/dev/c/LearnCMemoryByGrinding/units/m11-tools/lesson-demo/main.c:19 in overflow
+Shadow bytes around the buggy address:
+  0x6c99b92dfd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x6c99b92dfe00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x6c99b92dfe80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x6c99b92dff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x6c99b92dff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+=>0x6c99b92e0000: fa fa 00[02]fa fa fa fa fa fa fa fa fa fa fa fa
+  0x6c99b92e0080: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x6c99b92e0100: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x6c99b92e0180: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x6c99b92e0200: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x6c99b92e0280: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+Shadow byte legend (one shadow byte represents 8 application bytes):
+  Addressable:           00
+  Partially addressable: 01 02 03 04 05 06 07 
+  Heap left redzone:       fa
+  Freed heap region:       fd
+  Stack left redzone:      f1
+  Stack mid redzone:       f2
+  Stack right redzone:     f3
+  Stack after return:      f5
+  Stack use after scope:   f8
+  Global redzone:          f9
+  Global init order:       f6
+  Poisoned by user:        f7
+  Container overflow:      fc
+  Array cookie:            ac
+  Intra object redzone:    bb
+  ASan internal:           fe
+  Left alloca redzone:     ca
+  Right alloca redzone:    cb
+==797814==ABORTING
+make[1]: *** [Makefile:12: demo-asan] Aborted
+# exit status: 2

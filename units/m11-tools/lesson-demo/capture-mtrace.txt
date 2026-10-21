@@ -1,0 +1,12 @@
+# source-sha256: 16989d2cb7a1064db085f45c9681fbdb767e288789a8cba98b9e12468ea32081
+# tool: demo-mtrace   captured: 2026-10-21 14:58 PDT on DESKTOP-AK42M6F
+# Addresses, PIDs and thread ids will differ on your run.
+
+Memory not freed:
+-----------------
+           Address     Size     Caller
+0x00005c2701e47010      0x8  at /home/n8/dev/c/LearnCMemoryByGrinding/units/m11-tools/lesson-demo/main.c:26
+0x00005c2701e47510     0x20  at /home/n8/dev/c/LearnCMemoryByGrinding/units/m11-tools/lesson-demo/main.c:25 (discriminator 1)
+0x00005c2701e47540     0x30  at /home/n8/dev/c/LearnCMemoryByGrinding/units/m11-tools/lesson-demo/main.c:29
+make[1]: *** [Makefile:21: demo-mtrace] Error 1
+# exit status: 2

@@ -1,0 +1,63 @@
+# source-sha256: 436cb755c676baaf365de4597621101992c98e5ac4be82f6e38e2c98c29e88e8
+# tool: asan   captured: 2026-10-21 15:24 PDT on DESKTOP-AK42M6F
+# Addresses, PIDs and thread ids will differ on your run.
+=================================================================
+==876675==ERROR: AddressSanitizer: heap-use-after-free on address 0x79fbfbce0050 at pc 0x55af8ea96983 bp 0x7ffe7b3ce970 sp 0x7ffe7b3ce960
+READ of size 4 at 0x79fbfbce0050 thread T0
+    #0 0x55af8ea96982 in main /home/n8/dev/c/LearnCMemoryByGrinding/units/m02b-first-reports/e01-report-uaf/main.c:25
+    #1 0x7dcbfce27780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
+    #2 0x7dcbfce278b8 in __libc_start_main (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
+    #3 0x55af8ea961c4 in _start (/home/n8/dev/c/LearnCMemoryByGrinding/units/m02b-first-reports/e01-report-uaf/build/asan/prog+0x31c4) (BuildId: aac64c8531b9135e98030fcd859f3d35c2a4d342)
+
+0x79fbfbce0050 is located 16 bytes inside of 20-byte region [0x79fbfbce0040,0x79fbfbce0054)
+freed by thread T0 here:
+    #0 0x7dcbfdb2ae91  (/usr/lib/libasan.so.8+0x12ae91) (BuildId: b8a4241051a1621937fdc46e867ba7ecb56d96ea)
+    #1 0x55af8ea96e69 in inventory_drop /home/n8/dev/c/LearnCMemoryByGrinding/units/m02b-first-reports/e01-report-uaf/inventory.c:20
+    #2 0x55af8ea966d2 in main /home/n8/dev/c/LearnCMemoryByGrinding/units/m02b-first-reports/e01-report-uaf/main.c:19
+    #3 0x7dcbfce27780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
+    #4 0x7dcbfce278b8 in __libc_start_main (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
+    #5 0x55af8ea961c4 in _start (/home/n8/dev/c/LearnCMemoryByGrinding/units/m02b-first-reports/e01-report-uaf/build/asan/prog+0x31c4) (BuildId: aac64c8531b9135e98030fcd859f3d35c2a4d342)
+
+previously allocated by thread T0 here:
+    #0 0x7dcbfdb2c0c1 in malloc (/usr/lib/libasan.so.8+0x12c0c1) (BuildId: b8a4241051a1621937fdc46e867ba7ecb56d96ea)
+    #1 0x55af8ea96b2b in inventory_add /home/n8/dev/c/LearnCMemoryByGrinding/units/m02b-first-reports/e01-report-uaf/inventory.c:9
+    #2 0x55af8ea965cb in main /home/n8/dev/c/LearnCMemoryByGrinding/units/m02b-first-reports/e01-report-uaf/main.c:8
+    #3 0x7dcbfce27780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
+    #4 0x7dcbfce278b8 in __libc_start_main (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
+    #5 0x55af8ea961c4 in _start (/home/n8/dev/c/LearnCMemoryByGrinding/units/m02b-first-reports/e01-report-uaf/build/asan/prog+0x31c4) (BuildId: aac64c8531b9135e98030fcd859f3d35c2a4d342)
+
+SUMMARY: AddressSanitizer: heap-use-after-free /home/n8/dev/c/LearnCMemoryByGrinding/units/m02b-first-reports/e01-report-uaf/main.c:25 in main
+Shadow bytes around the buggy address:
+  0x79fbfbcdfd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x79fbfbcdfe00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x79fbfbcdfe80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x79fbfbcdff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x79fbfbcdff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+=>0x79fbfbce0000: fa fa 00 00 00 fa fa fa fd fd[fd]fa fa fa 00 00
+  0x79fbfbce0080: 04 fa fa fa 00 00 04 fa fa fa fa fa fa fa fa fa
+  0x79fbfbce0100: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x79fbfbce0180: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x79fbfbce0200: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x79fbfbce0280: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+Shadow byte legend (one shadow byte represents 8 application bytes):
+  Addressable:           00
+  Partially addressable: 01 02 03 04 05 06 07 
+  Heap left redzone:       fa
+  Freed heap region:       fd
+  Stack left redzone:      f1
+  Stack mid redzone:       f2
+  Stack right redzone:     f3
+  Stack after return:      f5
+  Stack use after scope:   f8
+  Global redzone:          f9
+  Global init order:       f6
+  Poisoned by user:        f7
+  Container overflow:      fc
+  Array cookie:            ac
+  Intra object redzone:    bb
+  ASan internal:           fe
+  Left alloca redzone:     ca
+  Right alloca redzone:    cb
+==876675==ABORTING
+make[1]: *** [../../../common.mk:91: asan] Aborted
+# exit status: 2

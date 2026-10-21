@@ -1,0 +1,12 @@
+# source-sha256: c884e261b29f4d87830a449a3beefeb1a03b3ab7f87105f73030da1a40881453
+# tool: run   captured: 2026-10-21 14:58 PDT on DESKTOP-AK42M6F
+# Addresses, PIDs and thread ids will differ on your run.
+alignof(char)        = 1
+alignof(int)         = 4
+alignof(double)      = 8
+alignof(long double) = 16
+alignof(max_align_t) = 16
+sizeof(max_align_t)  = 32
+malloc(1) % 16       = 0, 0
+distance between them = 32 bytes
+# exit status: 0

@@ -1,0 +1,54 @@
+# source-sha256: b27ce52c9dd3b1601ecfcc2fed3bfd257e14d42a3b8e0f12444bc87d4f785299
+# tool: asan   captured: 2026-10-21 14:57 PDT on DESKTOP-AK42M6F
+# Addresses, PIDs and thread ids will differ on your run.
+=================================================================
+==797551==ERROR: AddressSanitizer: stack-use-after-return on address 0x6c7c7e1d0020 at pc 0x707c812e99bb bp 0x7fffe18f4b60 sp 0x7fffe18f4308
+READ of size 7 at 0x6c7c7e1d0020 thread T0
+    #0 0x707c812e99ba  (/usr/lib/libasan.so.8+0xe99ba) (BuildId: b8a4241051a1621937fdc46e867ba7ecb56d96ea)
+    #1 0x65101aee7592 in main /home/n8/dev/c/LearnCMemoryByGrinding/units/m11-tools/e03-return-local/main.c:23
+    #2 0x707c80627780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
+    #3 0x707c806278b8 in __libc_start_main (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
+    #4 0x65101aee7154 in _start (/home/n8/dev/c/LearnCMemoryByGrinding/units/m11-tools/e03-return-local/build/asan/prog+0x2154) (BuildId: 0e9ca6fb254ee9763c20fa7b42a8482ac07271cf)
+
+Address 0x6c7c7e1d0020 is located in stack of thread T0 at offset 32 in frame
+    #0 0x65101aee7463 in label_for /home/n8/dev/c/LearnCMemoryByGrinding/units/m11-tools/e03-return-local/main.c:15
+
+  This frame has 1 object(s):
+    [32, 48) 'buf' (line 16) <== Memory access at offset 32 is inside this variable
+HINT: this may be a false positive if your program uses some custom stack unwind mechanism, swapcontext or vfork
+      (longjmp and C++ exceptions *are* supported)
+SUMMARY: AddressSanitizer: stack-use-after-return /home/n8/dev/c/LearnCMemoryByGrinding/units/m11-tools/e03-return-local/main.c:23 in main
+Shadow bytes around the buggy address:
+  0x6c7c7e1cfd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x6c7c7e1cfe00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x6c7c7e1cfe80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x6c7c7e1cff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x6c7c7e1cff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+=>0x6c7c7e1d0000: f5 f5 f5 f5[f5]f5 f5 f5 00 00 00 00 00 00 00 00
+  0x6c7c7e1d0080: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x6c7c7e1d0100: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x6c7c7e1d0180: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x6c7c7e1d0200: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x6c7c7e1d0280: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+Shadow byte legend (one shadow byte represents 8 application bytes):
+  Addressable:           00
+  Partially addressable: 01 02 03 04 05 06 07 
+  Heap left redzone:       fa
+  Freed heap region:       fd
+  Stack left redzone:      f1
+  Stack mid redzone:       f2
+  Stack right redzone:     f3
+  Stack after return:      f5
+  Stack use after scope:   f8
+  Global redzone:          f9
+  Global init order:       f6
+  Poisoned by user:        f7
+  Container overflow:      fc
+  Array cookie:            ac
+  Intra object redzone:    bb
+  ASan internal:           fe
+  Left alloca redzone:     ca
+  Right alloca redzone:    cb
+==797551==ABORTING
+make[1]: *** [../../../common.mk:91: asan] Aborted
+# exit status: 2

@@ -1,0 +1,16 @@
+# source-sha256: ce9a5df6a56ece0859d1e569f361d3518f37fd218644c7557228922cfade4c14
+# tool: demo-perturb   captured: 2026-10-21 15:38 PDT on DESKTOP-AK42M6F
+# Addresses, PIDs and thread ids will differ on your run.
+MALLOC_PERTURB_=(unset)
+malloc(64), reused:          same address  bytes 32..47: 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11
+malloc(4096), reused:        same address  bytes 32..47: 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22
+exit 0
+MALLOC_PERTURB_=170
+malloc(64), reused:          same address  bytes 32..47: 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11
+malloc(4096), reused:        same address  bytes 32..47: 55 55 55 55 55 55 55 55 55 55 55 55 55 55 55 55
+exit 0
+MALLOC_PERTURB_=170
+malloc(64), reused:          same address  bytes 32..47: 55 55 55 55 55 55 55 55 55 55 55 55 55 55 55 55
+malloc(4096), reused:        same address  bytes 32..47: 55 55 55 55 55 55 55 55 55 55 55 55 55 55 55 55
+exit 0
+# exit status: 0

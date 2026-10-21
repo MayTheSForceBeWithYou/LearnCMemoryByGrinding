@@ -1,0 +1,37 @@
+# source-sha256: 2023086bd3c0bc865677e08ee3875f09e8a6d43384f7e6ef7d5fa66f1510d1f6
+# tool: demo-vgdb   captured: 2026-10-21 14:58 PDT on DESKTOP-AK42M6F
+# Addresses, PIDs and thread ids will differ on your run.
+relaying data between gdb and process 798182
+warning: remote target does not support file transfer, attempting to access files from local filesystem.
+0x00000000040267e0 in ?? () from /lib64/ld-linux-x86-64.so.2
+
+Program received signal SIGTRAP, Trace/breakpoint trap.
+0x0000000004001415 in uninit () at main.c:67
+67	    if (v[1] > v[0])
+#0  0x0000000004001415 in uninit () at main.c:67
+#1  0x00000000040014e5 in main (argc=2, argv=0x1fff000978) at main.c:82
+$1 = 0
+00000000 ffffffff
+Kill the program being debugged? (y or n) [answered Y; input not from terminal]
+[Inferior 1 (Remote target) killed]
+--- valgrind stderr ---
+==798182== Memcheck, a memory error detector
+==798182== Copyright (C) 2002-2024, and GNU GPL'd, by Julian Seward et al.
+==798182== Using Valgrind-3.25.1 and LibVEX; rerun with -h for copyright info
+==798182== Command: ./build/plain/prog uninit
+==798182== 
+==798182== (action at startup) vgdb me ... 
+==798182== 
+==798182== TO DEBUG THIS PROCESS USING GDB: start GDB like this
+==798182==   /path/to/gdb ./build/plain/prog
+==798182== and then give GDB the following command
+==798182==   target remote | /usr/lib/valgrind/../../bin/vgdb --vgdb-prefix=build/vgdb --pid=798182
+==798182== --pid is optional if only one valgrind process is running
+==798182== 
+==798182== Conditional jump or move depends on uninitialised value(s)
+==798182==    at 0x4001415: uninit (main.c:67)
+==798182==    by 0x40014E4: main (main.c:82)
+==798182== 
+==798182== (action on error) vgdb me ... 
+==798182== Gdb request to kill this process
+# exit status: 0

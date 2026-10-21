@@ -1,0 +1,87 @@
+# source-sha256: 2023086bd3c0bc865677e08ee3875f09e8a6d43384f7e6ef7d5fa66f1510d1f6
+# tool: demo-asan   captured: 2026-10-21 15:08 PDT on DESKTOP-AK42M6F
+# Addresses, PIDs and thread ids will differ on your run.
+Breakpoint 1 at 0x3edd: file main.c, line 74.
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/usr/lib/libthread_db.so.1".
+
+Breakpoint 1, main (argc=2, argv=0x7fffffffe8b8) at main.c:74
+74	    const char *m = argc > 1 ? argv[1] : "";
+Breakpoint 2 at 0x7ffff793946c
+No breakpoints made.
+Breakpoint 3 at 0x7ffff793ada0
+Num     Type           Disp Enb Address            What
+1       breakpoint     keep y   0x0000555555557edd in main at main.c:74
+	breakpoint already hit 1 time
+2       breakpoint     keep y   0x00007ffff793946c <__asan_report_error+12>
+3       breakpoint     keep y   0x00007ffff793ada0 <__asan_report_store4>
+
+Breakpoint 3, 0x00007ffff793ada0 in __asan_report_store4 () from /usr/lib/libasan.so.8
+#0  0x00007ffff793ada0 in __asan_report_store4 () from /usr/lib/libasan.so.8
+#1  0x0000555555557d4a in asan () at main.c:57
+#2  0x0000555555558022 in main (argc=2, argv=0x7fffffffe8b8) at main.c:80
+=================================================================
+==810084==ERROR: AddressSanitizer: heap-buffer-overflow on address 0x7c1ff5ae001c at pc 0x555555557d4a bp 0x7fffffffe730 sp 0x7fffffffe720
+WRITE of size 4 at 0x7c1ff5ae001c thread T0
+    #0 0x555555557d49 in asan /home/n8/dev/c/LearnCMemoryByGrinding/units/m13-gdb/lesson-demo/main.c:57
+    #1 0x555555558021 in main /home/n8/dev/c/LearnCMemoryByGrinding/units/m13-gdb/lesson-demo/main.c:80
+    #2 0x7ffff6c27780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
+    #3 0x7ffff6c278b8 in __libc_start_main (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
+    #4 0x5555555571f4 in _start (/home/n8/dev/c/LearnCMemoryByGrinding/units/m13-gdb/lesson-demo/build/asan/prog+0x31f4) (BuildId: e755a1d06a217f1b4dae2b37c8c50247de657315)
+
+0x7c1ff5ae001c is located 0 bytes after 12-byte region [0x7c1ff5ae0010,0x7c1ff5ae001c)
+allocated by thread T0 here:
+    #0 0x7ffff792c0c1 in malloc (/usr/lib/libasan.so.8+0x12c0c1) (BuildId: b8a4241051a1621937fdc46e867ba7ecb56d96ea)
+    #1 0x555555557ca7 in asan /home/n8/dev/c/LearnCMemoryByGrinding/units/m13-gdb/lesson-demo/main.c:54
+    #2 0x555555558021 in main /home/n8/dev/c/LearnCMemoryByGrinding/units/m13-gdb/lesson-demo/main.c:80
+    #3 0x7ffff6c27780  (/usr/lib/libc.so.6+0x27780) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
+    #4 0x7ffff6c278b8 in __libc_start_main (/usr/lib/libc.so.6+0x278b8) (BuildId: d320029ad1a23be2f4bce117fd321cbd23a2014b)
+    #5 0x5555555571f4 in _start (/home/n8/dev/c/LearnCMemoryByGrinding/units/m13-gdb/lesson-demo/build/asan/prog+0x31f4) (BuildId: e755a1d06a217f1b4dae2b37c8c50247de657315)
+
+SUMMARY: AddressSanitizer: heap-buffer-overflow /home/n8/dev/c/LearnCMemoryByGrinding/units/m13-gdb/lesson-demo/main.c:57 in asan
+Shadow bytes around the buggy address:
+  0x7c1ff5adfd80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x7c1ff5adfe00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x7c1ff5adfe80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x7c1ff5adff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+  0x7c1ff5adff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+=>0x7c1ff5ae0000: fa fa 00[04]fa fa fa fa fa fa fa fa fa fa fa fa
+  0x7c1ff5ae0080: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x7c1ff5ae0100: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x7c1ff5ae0180: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x7c1ff5ae0200: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+  0x7c1ff5ae0280: fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa fa
+Shadow byte legend (one shadow byte represents 8 application bytes):
+  Addressable:           00
+  Partially addressable: 01 02 03 04 05 06 07 
+  Heap left redzone:       fa
+  Freed heap region:       fd
+  Stack left redzone:      f1
+  Stack mid redzone:       f2
+  Stack right redzone:     f3
+  Stack after return:      f5
+  Stack use after scope:   f8
+  Global redzone:          f9
+  Global init order:       f6
+  Poisoned by user:        f7
+  Container overflow:      fc
+  Array cookie:            ac
+  Intra object redzone:    bb
+  ASan internal:           fe
+  Left alloca redzone:     ca
+  Right alloca redzone:    cb
+==810084==ABORTING
+
+Program received signal SIGABRT, Aborted.
+0x00007ffff6c9a11c in ?? () from /usr/lib/libc.so.6
+#0  0x00007ffff6c9a11c in ?? () from /usr/lib/libc.so.6
+#1  0x00007ffff6c3e5d0 in raise () from /usr/lib/libc.so.6
+#2  0x00007ffff6c25685 in abort () from /usr/lib/libc.so.6
+#3  0x00007ffff783a564 in ?? () from /usr/lib/libasan.so.8
+#4  0x00007ffff796743e in ?? () from /usr/lib/libasan.so.8
+#5  0x00007ffff7939e09 in ?? () from /usr/lib/libasan.so.8
+#6  0x00007ffff7939277 in ?? () from /usr/lib/libasan.so.8
+#7  0x00007ffff793addd in __asan_report_store4 () from /usr/lib/libasan.so.8
+#8  0x0000555555557d4a in asan () at main.c:57
+#9  0x0000555555558022 in main (argc=2, argv=0x7fffffffe8b8) at main.c:80
+# exit status: 0
