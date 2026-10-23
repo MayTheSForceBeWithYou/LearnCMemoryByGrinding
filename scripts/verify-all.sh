@@ -19,6 +19,21 @@
 # Every exercise's build/ is removed afterwards. Exit status is non-zero on any failure.
 set -u
 here=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+
+# Preconditions. Without these the run used to abort partway and still exit 0,
+# reporting success while verifying almost nothing. Fail loudly instead.
+# macOS has neither: /bin/bash is 3.2 and `timeout` is GNU coreutils.
+# Use the course container: ./scripts/lcmg-shell.sh bash scripts/verify-all.sh
+if [ "${BASH_VERSINFO[0]}" -lt 4 ]; then
+    echo "verify-all: needs bash 4+ (associative arrays); this is bash $BASH_VERSION" >&2
+    echo "verify-all: run it in the course container: ./scripts/lcmg-shell.sh bash scripts/verify-all.sh" >&2
+    exit 2
+fi
+if ! command -v timeout >/dev/null 2>&1; then
+    echo "verify-all: needs 'timeout' (GNU coreutils) to bound each make check" >&2
+    echo "verify-all: run it in the course container: ./scripts/lcmg-shell.sh bash scripts/verify-all.sh" >&2
+    exit 2
+fi
 only=()
 while [ $# -gt 0 ]; do
     case "$1" in

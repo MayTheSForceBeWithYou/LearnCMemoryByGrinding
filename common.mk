@@ -28,7 +28,12 @@ SRCS           ?= main.c
 EXPECT_SYMBOLS ?=
 ARGS           ?=
 PROG           ?= prog
+# gcc by default; `make CC=clang` or CC=clang in the environment wins.
+# Not `CC ?= gcc`: make predefines CC as `cc`, so ?= would never fire and would
+# silently compile with cc instead. $(origin) is `default` only for make's own value.
+ifeq ($(filter-out default undefined,$(origin CC)),)
 CC             := gcc
+endif
 
 CFLAGS  := -std=c17 -Wall -Wextra -Wpedantic -g -I$(LIBDIR) $(EXTRA_CFLAGS)
 SANFLAGS := -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer
