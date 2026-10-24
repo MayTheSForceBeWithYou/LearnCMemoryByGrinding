@@ -1,0 +1,105 @@
+# CI: verify the whole course on macOS (Apple Silicon) and Linux.
+#
+# Each job runs scripts/verify-all.sh over its shard: every exercise starter
+# must behave as specified (WRITE/FAULT/DESIGN starters fail to link with the
+# expected undefined symbols, BUG starters fail `make check`, solutions pass
+# `make check`) and every capture*.txt must match its source.
+#
+# macOS notes: the job installs Homebrew bash 5 + coreutils because
+# verify-all.sh needs bash 4+ and GNU `timeout` (as `gtimeout`). On macOS,
+# `make check` runs the `leaks` tool instead of Valgrind, and [BUG] starters
+# whose bug is visible only to Memcheck report SKIP (Darwin) rather than FAIL;
+# those are covered by the Linux job.
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify-macos:
+    name: macOS arm64 (${{ matrix.shard }})
+    runs-on: macos-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - shard: m01-m05
+            only: >-
+              --only units/m01-lifetimes
+              --only units/m02-malloc-free
+              --only units/m02b-first-reports
+              --only units/m03-calloc-size
+              --only units/m04-realloc
+              --only units/m05-ownership
+          - shard: m06-m10
+            only: >-
+              --only units/m06-partial-failure
+              --only units/m07-heap-strings
+              --only units/m08-grids
+              --only units/m09-vec
+              --only units/m10-linked
+          - shard: m11-m14
+            only: >-
+              --only units/m11-tools
+              --only units/m12-zoo
+              --only units/m13-gdb
+              --only units/m14-arenas
+          - shard: capstones
+            only: >-
+              --only capstones/c1-wordfreq
+              --only capstones/c2-gridload
+              --only capstones/c3-lru
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install bash 5 and coreutils
+        run: brew install bash coreutils
+
+      - name: Show toolchain
+        run: |
+          uname -m
+          cc --version | head -1
+          /opt/homebrew/bin/bash --version | head -1
+          lldb --version
+
+      - name: Verify shard
+        # Unquoted ${{ matrix.only }} splits into separate --only arguments.
+        run: /opt/homebrew/bin/bash scripts/verify-all.sh ${{ matrix.only }}
+
+      # lldb is the native macOS debugger (gdb cannot run arm64 binaries).
+      # Prove it can break on main, inspect locals, and run to completion.
+      - name: lldb smoke test
+        if: matrix.shard == 'm01-m05'
+        run: |
+          make -C units/m01-lifetimes/e01-trace-frames build
+          lldb --batch \
+            -o "breakpoint set --name main" \
+            -o run \
+            -o "frame variable" \
+            -o continue \
+            -- units/m01-lifetimes/e01-trace-frames/build/plain/prog
+
+  verify-linux:
+    name: Linux (full tree)
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install valgrind
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq valgrind
+
+      - name: Show toolchain
+        run: |
+          gcc --version | head -1
+          valgrind --version
+
+      - name: Verify full tree
+        run: bash scripts/verify-all.sh
