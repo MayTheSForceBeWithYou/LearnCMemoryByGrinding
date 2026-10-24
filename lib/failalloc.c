@@ -20,14 +20,41 @@
  * fail) without being counted or injected. Either wrap such a function explicitly
  * or keep exercises that depend on it out of [FAULT].
  * Not thread-safe; course exercises are single-threaded.
+ *
+ * macOS: Apple's ld64 rejects --wrap, so common.mk renames the student's
+ * allocation calls at compile time instead (-Dmalloc=__wrap_malloc, ...),
+ * and the fault build compiles this file plain, so its calls below reach the
+ * real allocator. The __real_* names below are therefore defined, on macOS,
+ * as the real functions themselves; reallocarray is provided here because it
+ * only exists in macOS 15+ SDKs. See docs/macos.md.
  */
 #define _GNU_SOURCE
 #include "failalloc.h"
 
 #include <errno.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#ifdef __APPLE__
+#define __real_malloc malloc
+#define __real_calloc calloc
+#define __real_realloc realloc
+#define __real_free free
+#define __real_strdup strdup
+#define __real_strndup strndup
+/* Overflow-checked reallocarray for SDKs that lack it; identical semantics. */
+static void *lcmg_reallocarray_impl(void *p, size_t n, size_t size)
+{
+    if (size != 0 && n > SIZE_MAX / size) {
+        errno = ENOMEM;
+        return NULL;
+    }
+    return realloc(p, n * size);
+}
+#define __real_reallocarray lcmg_reallocarray_impl
+#endif
 
 static unsigned long fa_calls;
 static unsigned long fa_fail_at;
