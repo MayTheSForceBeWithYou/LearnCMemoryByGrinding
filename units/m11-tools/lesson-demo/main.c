@@ -1,5 +1,12 @@
 /* M11 lesson demo (not an exercise). Usage: build/.../prog overflow|leaks|uninit */
+/* mtrace() is glibc-only; on other platforms (e.g. macOS) it is a no-op and
+ * the demo is otherwise unchanged. See docs/macos.md. */
+#if defined(__GLIBC__)
 #include <mcheck.h>
+#define LCMG_MTRACE() mtrace()
+#else
+#define LCMG_MTRACE() ((void)0)
+#endif
 #include <stdlib.h>
 #include <string.h>
 #include "course.h"
@@ -48,7 +55,7 @@ static void uninit(void)
 
 int main(int argc, char **argv)
 {
-    mtrace();
+    LCMG_MTRACE();
     if (argc > 1 && strcmp(argv[1], "overflow") == 0)
         overflow();
     else if (argc > 1 && strcmp(argv[1], "leaks") == 0)
