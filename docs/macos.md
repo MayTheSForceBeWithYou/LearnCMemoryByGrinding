@@ -22,7 +22,7 @@ not the default.
 | LeakSanitizer (`detect_leaks=1`) | no | ASan aborts at startup; `make leaks` replaces it |
 | `mtrace` (M11 e07) | no-op | glibc-only; the exercise compiles, the call does nothing |
 | `vgdb` (M13 e04) | no | needs Valgrind + gdb; container-only |
-| `reallocarray` (M09) | macOS 15+ | added to the macOS SDK in Sequoia; older Macs use the container for M09 |
+| `reallocarray` (M09) | yes | absent from the macOS SDK entirely; the course provides it in `lib/lcmg_reallocarray.c`, linked automatically on macOS |
 
 ## Setup
 
@@ -195,9 +195,11 @@ Most units are identical on macOS. The exceptions:
 - **M02b e03 (predict Valgrind).** The exercise is reading a Valgrind report.
   Read the captured report in the lesson and do the prediction; to *produce* a
   Valgrind report yourself, use the container.
-- **M09 (vectors).** Uses `reallocarray`, which the macOS SDK only has from
-  macOS 15 (Sequoia). On macOS 15+ it just works. On an older Mac, do M09 in
-  the container.
+- **M09 (vectors).** Uses `reallocarray`, which the macOS SDK does not ship.
+  The course provides it in `lib/lcmg_reallocarray.c` (renamed by
+  `common.mk` and linked into every macOS binary), with identical
+  overflow-checked semantics, so M09 builds and runs natively. In the fault
+  build the call is still counted by the sweep, exactly as on Linux.
 - **M11 e07 and the M11 lesson demo.** They call glibc's `mtrace()`. On macOS
   the call compiles to a no-op (guarded by `#if defined(__GLIBC__)`), so the
   exercises build and pass — you just cannot produce an `mtrace` log there.
