@@ -21,6 +21,13 @@
  * exercise sees it, so student code compiles -- Apple Clang errors on
  * implicit function declarations. */
 void *lcmg_reallocarray(void *p, size_t n, size_t size);
+/* The fault build renames allocation calls to the __wrap_* wrappers at
+ * compile time (common.mk FAULT_DEFS). The other wrappers need no
+ * declaration here: the SDK headers declare malloc/calloc/realloc/free and
+ * strdup/strndup, and the rename applies to those declarations too. Only
+ * reallocarray has no SDK declaration to rename, so its wrapper is
+ * declared here. */
+void *__wrap_reallocarray(void *p, size_t n, size_t size);
 #endif
 
 #define EXIT_OOM 3
