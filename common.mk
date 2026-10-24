@@ -50,8 +50,11 @@ CFLAGS  := -std=c17 -Wall -Wextra -Wpedantic -g -I$(LIBDIR) $(EXTRA_CFLAGS)
 # Strict -std=c17 hides the POSIX declarations (strdup, strndup, getline) from
 # the macOS SDK headers. -D_DARWIN_C_SOURCE is the macOS equivalent of glibc's
 # _DEFAULT_SOURCE: it restores the full API without dropping the standard mode.
+# -Werror=implicit-function-declaration matches Apple Clang's default (it
+# errors where GCC only warns) so the Linux Darwin simulation catches
+# undeclared calls the same way the macOS runner does.
 ifeq ($(IS_DARWIN),yes)
-CFLAGS  += -D_DARWIN_C_SOURCE
+CFLAGS  += -D_DARWIN_C_SOURCE -Werror=implicit-function-declaration
 endif
 # reallocarray is absent from the macOS SDK entirely; the student's calls are
 # renamed to lcmg_reallocarray (lib/lcmg_reallocarray.c, linked below). This
