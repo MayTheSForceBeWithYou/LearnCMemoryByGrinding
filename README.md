@@ -43,29 +43,32 @@ export DEBUGINFOD_URLS=https://debuginfod.archlinux.org
 Details: `LearnCwithRPG-terminal/appendices/c-gdb-and-sanitizers.md`, section
 "On Arch: it refuses to start", and appendix A of that course.
 
-### On macOS
+### On macOS (Apple Silicon)
 
-**The course cannot run natively on macOS.** Work inside the Linux container described
-below; everything then behaves exactly as the rest of this README says.
+**The course runs natively on a modern Mac.** Plain builds, ASan/UBSan, fault
+injection, and leak checking all work on Apple Silicon; the full guide is
+[`docs/macos.md`](docs/macos.md). The short version:
 
-This is not a matter of installing missing packages. Six things the course depends on
-are absent on macOS, and none has a drop-in replacement there:
+```bash
+xcode-select --install          # compiler, make, lldb
+make -C units/m01-lifetimes/e01-trace-frames check
+```
 
-| Dependency | Status on macOS |
-|---|---|
-| LeakSanitizer (`detect_leaks=1`) | unsupported; ASan aborts at startup, so `make asan`, `make fault` and `make check` all die before `main` runs |
-| Valgrind | unavailable on Apple Silicon |
-| `gdb` | unsupported on arm64 Darwin |
-| GNU `ld --wrap` | Apple's `ld64` rejects it, so every `[FAULT]` exercise and all three capstones fail to link |
-| glibc `reallocarray` | absent from the macOS SDK; M09 fails to compile |
-| glibc `mcheck.h` | absent; M11 `e07-split-fields` fails to compile |
+What is different from Linux, in one paragraph: `gcc` on macOS *is* Apple Clang,
+so the same Makefiles just work. LeakSanitizer is unsupported, so ASan runs with
+`detect_leaks=0` and `make check` runs the macOS `leaks` tool instead of Valgrind.
+Fault injection works through compile-time renaming instead of GNU `ld --wrap`
+(the mechanism is in `common.mk` and `lib/failalloc.c`). And the debugger is
+**lldb, not gdb** — gdb has no native run target for arm64 Darwin and cannot
+`run` an arm64 binary; `docs/macos.md` has the gdb→lldb command table. Valgrind,
+native gdb, `mtrace`, and `vgdb` still do not exist on macOS, so those parts of
+the course (M13 e04, Valgrind reports, `mtrace` logs) use the Linux container
+below. `reallocarray` (M09) needs macOS 15+.
 
-Leak detection, Valgrind, gdb and fault injection are four of the course's seven skills,
-so a native port would be a different course. The container is one command and costs you nothing.
+#### The Linux container (still available)
 
-#### One-time setup
-
-You need Docker or a drop-in replacement. If you do not already have one,
+For the parts above that macOS cannot do, the container is one command. You need
+Docker or a drop-in replacement. If you do not already have one,
 [colima](https://github.com/abiosoft/colima) is the lightest option:
 
 ```bash
@@ -84,8 +87,6 @@ coreutils and the section 3 man pages:
 ```bash
 docker build -t lcmg .
 ```
-
-#### Working the course
 
 `scripts/lcmg-shell.sh` runs anything inside the container with the repo mounted at
 `/course`. It builds the image for you if it is missing. Open a shell and work normally:
@@ -111,15 +112,20 @@ container always compiles what you just saved.
 
 #### Notes
 
-- `scripts/verify-all.sh` needs bash 4+ and GNU `timeout`, which macOS does not have.
-  Run on the host it exits 2 and tells you to use the container, rather than reporting
-  a false pass.
+- `scripts/verify-all.sh` needs bash 4+ and GNU `timeout`. On macOS, install
+  them (`brew install bash coreutils`) and run it with the Homebrew bash:
+  `/opt/homebrew/bin/bash scripts/verify-all.sh`. It also runs natively this way;
+  the container is no longer required for it. A `[BUG]` starter whose bug is
+  visible only to Memcheck reports `SKIP (Darwin)` on macOS rather than a false
+  pass — verify those in the container (or rely on CI's Linux job).
 - The `DEBUGINFOD_URLS` workaround above is Arch-specific. Debian ships an unstripped
   `ld.so`, so the image clears that variable and Valgrind starts without it.
 - `[BUG]` starters are meant to abort, so Linux may leave `core` files in their
   directories. They are harmless; delete them or add `core` to your `.gitignore`.
 - To compare GCC and Clang diagnostics on an exercise, override the compiler:
   `./scripts/lcmg-shell.sh make -C <exercise> CC=clang check`.
+- CI runs the full verification on every push, on macOS arm64 and on Linux
+  (`.github/workflows/ci.yml`).
 
 ## How an exercise works
 
