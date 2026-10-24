@@ -21,14 +21,18 @@ include ../../../common.mk
 - Flags are strict `-std=c17`, so `strdup`, `strndup`, `getline` and `reallocarray` are **not declared**
   unless the file starts with `#define _POSIX_C_SOURCE 200809L` (strdup/strndup/getline) or
   `#define _DEFAULT_SOURCE` (adds reallocarray), placed before any `#include`.
+  Keep those defines in the sources: they are the Linux path. On macOS,
+  `common.mk` adds `-D_DARWIN_C_SOURCE` for the same effect, so the same sources
+  compile on both. `reallocarray` needs macOS 15+ (see `docs/macos.md`).
 
 | Command | What it does |
 |---|---|
 | `make` / `make run` | build `build/plain/prog` and run it |
 | `make asan` | `build/asan/` (ASan+UBSan), run with `ASAN_OPTIONS=detect_leaks=1:abort_on_error=1:halt_on_error=1:allocator_may_return_null=1` (+ `ASAN_EXTRA`) |
-| `make valgrind` | memcheck on the **plain** build (never on an ASan build) |
-| `make fault` | `build/fault/` (ASan + `lib/failalloc.c` + `--wrap`), run the FAIL_AT sweep |
-| `make check` | build all modes, then checks, asan, valgrind, and the sweep if TAG has FAULT |
+| `make valgrind` | memcheck on the **plain** build (never on an ASan build). Linux only; on macOS it explains itself and exits 1 |
+| `make leaks` | macOS only: the `leaks` tool on the plain build; the leak-check step of `make check` on macOS |
+| `make fault` | `build/fault/` (ASan + `lib/failalloc.c` + `--wrap` on Linux, compile-time renaming on macOS), run the FAIL_AT sweep |
+| `make check` | build all modes, then checks, asan, valgrind (Linux) or `leaks` (macOS), and the sweep if TAG has FAULT |
 | `make clean` | remove `build/` |
 | `make capture TOOL=asan` | REPORT only: write `capture.txt` (see below) |
 
