@@ -13,6 +13,27 @@ You need M11 (reading reports). Every transcript below is real output from
 `lesson-demo/`, captured with `gdb -batch` scripts (`grow.gdb`, `watch.gdb`, `asan.gdb`) by
 `make capture`. Addresses will differ on your machine.
 
+### On macOS (Apple Silicon): do this unit with lldb
+
+gdb has no native run target for arm64 Darwin: a Homebrew gdb can set breakpoints
+but `run` fails with `Don't know how to run.` The four techniques in this unit
+transfer to lldb one-to-one — the full gdb→lldb command table, and why gdb cannot
+be fixed with flags, is in [`docs/macos.md`](../../docs/macos.md). In short:
+
+| gdb in this unit | lldb equivalent |
+|---|---|
+| `break realloc` | `breakpoint set --name realloc` |
+| `break buf_add if b->len == b->cap` | `breakpoint set --file main.c --line 13 --condition 'b->len == b->cap'` |
+| `watch -l b->count` | `watchpoint set expression -- &b->count` |
+| `print *v.data@v.len` | `parray <len> v.data` |
+| `$rdi`/`$rsi` at function entry | `$x0`/`$x1` (AArch64 calling convention) |
+| `info locals` | `frame variable` |
+
+Two things do not transfer: the transcripts below are real gdb output from
+Linux (register names and addresses differ on a Mac — that is expected), and
+**e04 (vgdb) is container-only**, because it needs Valgrind's gdbserver, which
+does not exist on macOS. Do e04 in `./scripts/lcmg-shell.sh`.
+
 ## Foundations
 
 ### What gdb needs
