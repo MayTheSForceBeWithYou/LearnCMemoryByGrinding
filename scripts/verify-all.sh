@@ -22,18 +22,29 @@ here=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 
 # Preconditions. Without these the run used to abort partway and still exit 0,
 # reporting success while verifying almost nothing. Fail loudly instead.
-# macOS has neither: /bin/bash is 3.2 and `timeout` is GNU coreutils.
-# Use the course container: ./scripts/lcmg-shell.sh bash scripts/verify-all.sh
+# macOS: /bin/bash is 3.2 and there is no GNU `timeout`. Install both from
+# Homebrew (brew install bash coreutils) and run with the Homebrew bash:
+#   /opt/homebrew/bin/bash scripts/verify-all.sh
+# coreutils provides `timeout` as `gtimeout`; either name works here.
 if [ "${BASH_VERSINFO[0]}" -lt 4 ]; then
     echo "verify-all: needs bash 4+ (associative arrays); this is bash $BASH_VERSION" >&2
-    echo "verify-all: run it in the course container: ./scripts/lcmg-shell.sh bash scripts/verify-all.sh" >&2
+    echo "verify-all: on macOS install it (brew install bash) and run with /opt/homebrew/bin/bash;" >&2
+    echo "verify-all: otherwise run it in the course container: ./scripts/lcmg-shell.sh bash scripts/verify-all.sh" >&2
     exit 2
 fi
-if ! command -v timeout >/dev/null 2>&1; then
+TIMEOUT_BIN=$(command -v timeout || command -v gtimeout || true)
+if [ -z "$TIMEOUT_BIN" ]; then
     echo "verify-all: needs 'timeout' (GNU coreutils) to bound each make check" >&2
-    echo "verify-all: run it in the course container: ./scripts/lcmg-shell.sh bash scripts/verify-all.sh" >&2
+    echo "verify-all: on macOS install it (brew install coreutils); otherwise run in the" >&2
+    echo "verify-all: course container: ./scripts/lcmg-shell.sh bash scripts/verify-all.sh" >&2
     exit 2
 fi
+# macOS note: `make check` there runs the `leaks` tool instead of Valgrind, so a
+# [BUG] starter whose bug is only visible to Memcheck can pass `make check` on a
+# Mac. Such starters are reported SKIP (not FAIL) on Darwin; verify them in the
+# container for the full verdict.
+IS_DARWIN=0
+[ "$(uname -s)" = Darwin ] && IS_DARWIN=1
 only=()
 while [ $# -gt 0 ]; do
     case "$1" in
@@ -79,7 +90,7 @@ compile_error() { grep -qE '\.[ch]:[0-9]+(:[0-9]+)?: (fatal )?error:' "$log"; }
 verify_solution() { # DIR REL
     local d=$1 rel=$2 tag detail ok=0
     tag=$(mkvar "$d" TAG)
-    if timeout 600 "${MAKE[@]}" -C "$d" check >"$log" 2>&1; then
+    if "$TIMEOUT_BIN" 600 "${MAKE[@]}" -C "$d" check >"$log" 2>&1; then
         ok=1; detail="check ok"
     else
         local why; why=$(grep -m1 -E '^fault-sweep: (FAIL_AT|baseline)' "$log")
@@ -107,13 +118,26 @@ verify_starter() { # DIR REL
         elif compile_error; then detail="compile error (not a link failure): $(grep -m1 -E 'error:' "$log" | cut -c1-80)"
         else
             local s hit=
-            for s in $syms; do grep -q "undefined reference to \`$s'" "$log" && hit="$hit $s"; done
+            # GNU ld: "undefined reference to `sym'". Apple ld64 (clang):
+            # "Undefined symbols for architecture arm64: \"_sym\", referenced from: ...".
+            for s in $syms; do
+                grep -q "undefined reference to \`$s'" "$log" && hit="$hit $s"
+                grep -q "\"_$s\"" "$log" && hit="$hit $s"
+            done
             if [ -n "$hit" ]; then ok=1; detail="undefined reference:$hit"
             else detail="build failed without undefined reference to: $syms"; fi
         fi ;;
     BUG)
         if ! "${MAKE[@]}" -C "$d" build-all >"$log" 2>&1; then detail="does not build"
-        elif timeout 600 "${MAKE[@]}" -C "$d" check >"$log" 2>&1; then detail="make check passes; bug not detected"
+        elif "$TIMEOUT_BIN" 600 "${MAKE[@]}" -C "$d" check >"$log" 2>&1; then
+            if [ "$IS_DARWIN" = 1 ]; then
+                # On macOS there is no Valgrind in `make check`; a bug Memcheck
+                # alone would catch passes here. Not a failure — just unverified
+                # on this platform. See the note at the top of this script.
+                result "$rel" "${tag:-?}" starter 1 "SKIP (Darwin): check passes without Valgrind; verify in container"
+                clean "$d"; return 0
+            fi
+            detail="make check passes; bug not detected"
         else ok=1; detail="builds; check fails at: $(grep '^== ' "$log" | tail -n 1 | sed 's/^== //')"; fi ;;
     REPORT)
         if ! "${MAKE[@]}" -C "$d" build-all >"$log" 2>&1; then detail="does not build"
