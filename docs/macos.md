@@ -197,9 +197,10 @@ Most units are identical on macOS. The exceptions:
   Valgrind report yourself, use the container.
 - **M09 (vectors).** Uses `reallocarray`, which the macOS SDK does not ship.
   The course provides it in `lib/lcmg_reallocarray.c` (renamed by
-  `common.mk` and linked into every macOS binary), with identical
-  overflow-checked semantics, so M09 builds and runs natively. In the fault
-  build the call is still counted by the sweep, exactly as on Linux.
+  `common.mk`, declared in `lib/course.h`, and linked into every macOS
+  binary), with identical overflow-checked semantics, so M09 builds and runs
+  natively. In the fault build the call is still counted by the sweep,
+  exactly as on Linux.
 - **M11 e07 and the M11 lesson demo.** They call glibc's `mtrace()`. On macOS
   the call compiles to a no-op (guarded by `#if defined(__GLIBC__)`), so the
   exercises build and pass — you just cannot produce an `mtrace` log there.
