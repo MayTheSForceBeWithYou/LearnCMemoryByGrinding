@@ -50,10 +50,16 @@ CFLAGS  := -std=c17 -Wall -Wextra -Wpedantic -g -I$(LIBDIR) $(EXTRA_CFLAGS)
 # Strict -std=c17 hides the POSIX declarations (strdup, strndup, getline) from
 # the macOS SDK headers. -D_DARWIN_C_SOURCE is the macOS equivalent of glibc's
 # _DEFAULT_SOURCE: it restores the full API without dropping the standard mode.
-# reallocarray is absent from the macOS SDK entirely; the student's calls are
-# renamed to lcmg_reallocarray (lib/lcmg_reallocarray.c, linked below).
 ifeq ($(IS_DARWIN),yes)
-CFLAGS  += -D_DARWIN_C_SOURCE -Dreallocarray=lcmg_reallocarray
+CFLAGS  += -D_DARWIN_C_SOURCE
+endif
+# reallocarray is absent from the macOS SDK entirely; the student's calls are
+# renamed to lcmg_reallocarray (lib/lcmg_reallocarray.c, linked below). This
+# rename lives in its own variable, applied to the plain and asan objects
+# only: the fault objects get their own rename from FAULT_DEFS, and defining
+# the macro twice on one command line warns (-Wmacro-redefined).
+ifeq ($(IS_DARWIN),yes)
+REALLOC_DEF := -Dreallocarray=lcmg_reallocarray
 endif
 SANFLAGS := -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer
 # GNU ld --wrap (Linux) rewrites the student's malloc calls to __wrap_malloc at
@@ -109,10 +115,10 @@ USE_FAULT := $(if $(USE_ASAN),$(filter FAULT,$(TAG)))
 
 $(B)/plain/%.o: %.c $(HDRS)
 	@mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(REALLOC_DEF) -c $< -o $@
 $(B)/asan/%.o: %.c $(HDRS)
 	@mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) $(SANFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(SANFLAGS) $(REALLOC_DEF) -c $< -o $@
 # Fault objects: the student's own sources get the allocation renames (macOS) and
 # the --wrap link flags (Linux). failalloc.c itself is compiled plain, below, so
 # its calls to the real allocator are never renamed.
