@@ -50,8 +50,10 @@ CFLAGS  := -std=c17 -Wall -Wextra -Wpedantic -g -I$(LIBDIR) $(EXTRA_CFLAGS)
 # Strict -std=c17 hides the POSIX declarations (strdup, strndup, getline) from
 # the macOS SDK headers. -D_DARWIN_C_SOURCE is the macOS equivalent of glibc's
 # _DEFAULT_SOURCE: it restores the full API without dropping the standard mode.
+# reallocarray is absent from the macOS SDK entirely; the student's calls are
+# renamed to lcmg_reallocarray (lib/lcmg_reallocarray.c, linked below).
 ifeq ($(IS_DARWIN),yes)
-CFLAGS  += -D_DARWIN_C_SOURCE
+CFLAGS  += -D_DARWIN_C_SOURCE -Dreallocarray=lcmg_reallocarray
 endif
 SANFLAGS := -fsanitize=address,undefined -fno-sanitize-recover=all -fno-omit-frame-pointer
 # GNU ld --wrap (Linux) rewrites the student's malloc calls to __wrap_malloc at
@@ -88,6 +90,14 @@ FAULT_BIN  := $(B)/fault/$(PROG)
 PLAIN_OBJS := $(patsubst %.c,$(B)/plain/%.o,$(SRCS))
 ASAN_OBJS  := $(patsubst %.c,$(B)/asan/%.o,$(SRCS))
 FAULT_OBJS := $(patsubst %.c,$(B)/fault/%.o,$(SRCS)) $(B)/fault/_failalloc.o
+# macOS only: the course-provided reallocarray (lib/lcmg_reallocarray.c),
+# linked into every binary. Compiled plain, like failalloc.c, so its realloc
+# call always reaches the real allocator.
+ifeq ($(IS_DARWIN),yes)
+PLAIN_OBJS += $(B)/plain/_reallocarray.o
+ASAN_OBJS  += $(B)/asan/_reallocarray.o
+FAULT_OBJS += $(B)/fault/_reallocarray.o
+endif
 HDRS       := $(wildcard *.h) $(wildcard $(LIBDIR)/*.h)
 
 USE_ASAN  := $(if $(filter NO-ASAN,$(TAG)),,yes)
@@ -110,6 +120,15 @@ $(B)/fault/%.o: %.c $(HDRS)
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) $(SANFLAGS) $(if $(IS_DARWIN),$(FAULT_DEFS) -fno-builtin) -c $< -o $@
 $(B)/fault/_failalloc.o: $(LIBDIR)/failalloc.c $(LIBDIR)/failalloc.h
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) $(SANFLAGS) -c $< -o $@
+$(B)/plain/_reallocarray.o: $(LIBDIR)/lcmg_reallocarray.c
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -c $< -o $@
+$(B)/asan/_reallocarray.o: $(LIBDIR)/lcmg_reallocarray.c
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) $(SANFLAGS) -c $< -o $@
+$(B)/fault/_reallocarray.o: $(LIBDIR)/lcmg_reallocarray.c
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) $(SANFLAGS) -c $< -o $@
 
