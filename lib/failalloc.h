@@ -6,6 +6,13 @@
 
 #include <stddef.h>
 
+#ifdef __APPLE__
+/* Course-provided reallocarray (lib/lcmg_reallocarray.c); on macOS,
+ * __real_reallocarray names this function. Declared here so failalloc.c
+ * compiles cleanly -- Apple Clang errors on implicit declarations. */
+void *lcmg_reallocarray(void *p, size_t n, size_t size);
+#endif
+
 void *__real_malloc(size_t size);
 void *__real_calloc(size_t n, size_t size);
 void *__real_realloc(void *p, size_t size);
