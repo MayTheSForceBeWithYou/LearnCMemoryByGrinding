@@ -14,6 +14,15 @@
 
 #include <stdio.h>
 
+#ifdef __APPLE__
+#include <stddef.h>
+/* reallocarray is absent from the macOS SDK; the course provides it in
+ * lib/lcmg_reallocarray.c (renamed by common.mk). Declared here, where every
+ * exercise sees it, so student code compiles -- Apple Clang errors on
+ * implicit function declarations. */
+void *lcmg_reallocarray(void *p, size_t n, size_t size);
+#endif
+
 #define EXIT_OOM 3
 
 static inline int *course_failures_(void)
