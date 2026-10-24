@@ -63,7 +63,8 @@ Fault injection works through compile-time renaming instead of GNU `ld --wrap`
 `run` an arm64 binary; `docs/macos.md` has the gdb→lldb command table. Valgrind,
 native gdb, `mtrace`, and `vgdb` still do not exist on macOS, so those parts of
 the course (M13 e04, Valgrind reports, `mtrace` logs) use the Linux container
-below. `reallocarray` (M09) needs macOS 15+.
+below. (`reallocarray`, used by M09, is absent from the macOS SDK; the course
+provides it in `lib/lcmg_reallocarray.c`, linked automatically on macOS.)
 
 #### The Linux container (still available)
 
