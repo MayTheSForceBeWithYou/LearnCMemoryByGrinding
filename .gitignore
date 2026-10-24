@@ -1,0 +1,9 @@
+# Build output from common.mk (build/plain, build/asan, build/fault per exercise)
+build/
+# macOS debug-symbol bundles produced next to binaries
+*.dSYM/
+# Core dumps left by [BUG] starters that are meant to abort
+core
+core.*
+# macOS Finder metadata
+.DS_Store
