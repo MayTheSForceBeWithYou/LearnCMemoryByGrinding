@@ -23,7 +23,9 @@ include ../../../common.mk
   `#define _DEFAULT_SOURCE` (adds reallocarray), placed before any `#include`.
   Keep those defines in the sources: they are the Linux path. On macOS,
   `common.mk` adds `-D_DARWIN_C_SOURCE` for the same effect, so the same sources
-  compile on both. `reallocarray` needs macOS 15+ (see `docs/macos.md`).
+  compile on both. `reallocarray` is not in the macOS SDK at all; the course
+  provides it in `lib/lcmg_reallocarray.c`, linked automatically on macOS
+  (see `docs/macos.md`).
 
 | Command | What it does |
 |---|---|
