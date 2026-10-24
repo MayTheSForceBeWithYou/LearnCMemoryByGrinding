@@ -1,5 +1,14 @@
 /* m11-e07-split-fields [FAULT] */
+/* mtrace() is glibc-only; on other platforms (e.g. macOS) it is a no-op and
+ * the exercise is otherwise unchanged. See docs/macos.md. */
+#if defined(__GLIBC__)
 #include <mcheck.h>
+#define LCMG_MTRACE() mtrace()
+#define LCMG_MUNTRACE() muntrace()
+#else
+#define LCMG_MTRACE() ((void)0)
+#define LCMG_MUNTRACE() ((void)0)
+#endif
 #include <string.h>
 #include "course.h"
 #include "harness.h"
@@ -8,7 +17,7 @@
 
 int main(void)
 {
-    mtrace(); /* does nothing unless MALLOC_TRACE is set; see README */
+    LCMG_MTRACE(); /* does nothing unless MALLOC_TRACE is set; see README */
 
     size_t n = 99;
     char **f = split_fields("id,name,,score", ',', &n);
@@ -31,10 +40,10 @@ int main(void)
     free_fields(f);
     free_fields(NULL);
 
-    muntrace();
+    LCMG_MUNTRACE();
     return checks_done("m11-e07-split-fields");
 oom:
-    muntrace();
+    LCMG_MUNTRACE();
     fprintf(stderr, "m11-e07: out of memory\n");
     return EXIT_OOM;
 }
