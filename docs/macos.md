@@ -184,9 +184,18 @@ complains `DW_FORM_GNU_str_index or DW_FORM_strx used without .debug_str
 section` and breakpoints misbehave. That is DWARF5 (the compiler default)
 meeting a gdb that cannot read it from a macOS `.dSYM` bundle. The fix is
 `-gdwarf-4` on the compile line. You do **not** need it for lldb — lldb reads
-DWARF5 fine — so `common.mk` does not set it. It only matters if you are
-deliberately feeding a binary to Homebrew gdb, which, per above, cannot run it
-anyway.
+DWARF5 fine — so `common.mk` does not set it by default. It only matters if
+you are deliberately feeding a binary to Homebrew gdb, which, per above,
+cannot run it anyway.
+
+If you do want DWARF4, use the `mac` target instead of remembering the flag:
+
+```sh
+make mac   # same as: make EXTRA_CFLAGS=-gdwarf-4 build-all
+```
+
+It builds every variant (plain, ASan, fault) with `-gdwarf-4`, so whichever
+binary you point a debugger at has readable debug info.
 
 ## Per-unit exceptions
 
