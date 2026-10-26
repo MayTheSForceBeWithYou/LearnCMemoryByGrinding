@@ -113,7 +113,7 @@ USE_ASAN  := $(if $(filter NO-ASAN,$(TAG)),,yes)
 USE_FAULT := $(if $(USE_ASAN),$(filter FAULT,$(TAG)))
 
 .DEFAULT_GOAL := run
-.PHONY: run build build-asan build-fault build-all asan valgrind leaks fault check clean capture print-src-hash
+.PHONY: run build build-asan build-fault build-all mac asan valgrind leaks fault check clean capture print-src-hash
 .DELETE_ON_ERROR:
 
 $(B)/plain/%.o: %.c $(HDRS)
@@ -152,6 +152,19 @@ build: $(PLAIN_BIN)
 build-asan: $(ASAN_BIN)
 build-fault: $(FAULT_BIN)
 build-all: build $(if $(USE_ASAN),build-asan) $(if $(USE_FAULT),build-fault)
+
+# mac: build every variant with DWARF4 debug info. Apple Clang's default -g is
+# DWARF5, which Homebrew gdb cannot read (DW_FORM_strx errors when setting
+# breakpoints); lldb reads either, but DWARF4 keeps both debuggers happy. This
+# target exists so nobody has to remember the flag: `make mac` instead of
+# `make EXTRA_CFLAGS=-gdwarf-4 build-all`. The flag is appended to CFLAGS as a
+# target-specific variable, so it reaches every prerequisite's compile line
+# (including the fault objects) in a single make invocation. It also works on
+# Linux (DWARF4 is valid there); the name is about the Mac gdb problem it
+# solves. (Appending to EXTRA_CFLAGS instead would not work: CFLAGS is
+# simply-expanded and captures EXTRA_CFLAGS when common.mk is read.)
+mac: CFLAGS += -gdwarf-4
+mac: build-all
 
 run: $(PLAIN_BIN)
 	./$(PLAIN_BIN) $(ARGS)
